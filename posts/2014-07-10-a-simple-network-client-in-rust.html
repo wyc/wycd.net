@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>wyc - A Simple Network Client in Rust</title>
+		<link rel="stylesheet" href="../css/default.css" />
+	</head>
+	<body>
+    <header>
+      <h1>wyc's domain</h1>
+      <ul>
+        <li><a href="https://github.com/wyc" target="_blank">
+            <img src="../images/github.png" alt="GitHub">
+        </a></li>
+        <li><a href="https://www.linkedin.com/in/changwayne" target="_blank">
+            <img src="../images/linkedin.png" alt="LinkedIn">
+        </a></li>
+        <li><a href="https://twitter.com/wycdd" target="_blank">
+            <img src="../images/twitter.png" alt="Twitter">
+        </a></li>
+      </ul>
+    </header>
+    <nav>
+      <a href="../">Home</a> |
+      <a href="../blog.html">Blog</a> |
+      <a href="../projects.html">Projects</a> |
+      <a href="../consulting.html">Consulting</a>
+    </nav>
+		<hr />
+    <content>
+      <h2>A Simple Network Client in Rust</h2>
+      <div class="info">
+    Posted on July 10, 2014
+    
+</div>
+
+<div class="info">
+    
+    Tags: <a href="../tags/rust.html">rust</a>, <a href="../tags/programming.html">programming</a>
+    
+</div>
+
+<p>Below is the source code for a network client in Rust 0.12.0. Inspired by Graham King’s <a href="http://www.darkcoding.net/software/rust-what-i-learnt-so-far/#connect_to_a_socket">blog post</a>, this program retrieves the weather conditions for a region specified by an ID code. The remainder of this article will explain portions of the code in detail.</p>
+<h4 id="weather.rs"><a href="https://github.com/wyc/snippets/blob/master/rust/weather.rs">weather.rs</a>:</h4>
+<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="co">/**</span>
+<span class="co"> * rust network client example updated from</span>
+<span class="co"> * http://www.darkcoding.net/software/rust-what-i-learnt-so-far/#connect_to_a_socket</span>
+<span class="co"> *</span>
+<span class="co"> * rust 0.12.0</span>
+<span class="co"> */</span>
+
+<span class="kw">extern</span> <span class="kw">crate</span> std;
+
+<span class="kw">use</span> std::io::{TcpStream, IoResult};
+<span class="kw">use</span> std::<span class="dt">str</span>;
+
+<span class="kw">fn</span> fetch(code: &amp;<span class="dt">str</span>) -&gt; IoResult&lt;<span class="dt">Vec</span>&lt;<span class="dt">u8</span>&gt;&gt; {
+    <span class="kw">let</span> <span class="kw">mut</span> stream = TcpStream::connect(<span class="st">&quot;205.156.51.232&quot;</span>, <span class="dv">80</span>);
+    <span class="kw">let</span> data_get = <span class="pp">format!</span>(
+        <span class="st">&quot;GET /pub/data/observations/metar/decoded/{}.TXT HTTP/1.1</span><span class="sc">\n</span><span class="st">&quot;</span>,
+        code);
+    <span class="kw">let</span> data_headers = <span class="st">&quot;Host: weather.noaa.gov</span><span class="sc">\n\n</span><span class="st">&quot;</span>;
+
+    <span class="co">/* we can use try!() here, but for this example we won't use macros */</span>
+    <span class="kw">match</span> stream.write(data_get.as_bytes()) {
+        <span class="cn">Ok</span>(_) =&gt; (),
+        <span class="cn">Err</span>(err) =&gt; <span class="kw">return</span> <span class="cn">Err</span>(err)
+    }
+    <span class="kw">match</span> stream.write(data_headers.as_bytes()) {
+        <span class="cn">Ok</span>(_) =&gt; (),
+        <span class="cn">Err</span>(err) =&gt; <span class="kw">return</span> <span class="cn">Err</span>(err)
+    }
+    <span class="kw">let</span> rv = stream.read_to_end();
+
+    <span class="co">/* just to show how to explicitly close the connection.</span>
+<span class="co">     * drop() is called anyway when a variable goes out of scope. */</span>
+    drop(stream);
+
+    <span class="kw">return</span> rv;
+}
+
+<span class="kw">fn</span> main() {
+    <span class="kw">match</span> fetch(<span class="st">&quot;KEWR&quot;</span>) {
+        <span class="cn">Ok</span>(v) =&gt; <span class="pp">println!</span>(<span class="st">&quot;{}&quot;</span>, <span class="kw">match</span> <span class="dt">str</span>::from_utf8(v.as_slice()){
+            <span class="cn">Some</span>(s) =&gt; s,
+            <span class="cn">None</span> =&gt; <span class="st">&quot;&quot;</span>
+        }),
+        <span class="cn">Err</span>(err) =&gt; <span class="pp">println!</span>(<span class="st">&quot;error: {}&quot;</span>, err)
+    }
+}</code></pre></div>
+<h4 id="the-function-header">The Function Header:</h4>
+<pre><code>fn fetch(code: &amp;str) -&gt; IoResult&lt;Vec&lt;u8&gt;&gt; {</code></pre>
+<p>This function is called <code>fetch</code>, and it takes a string parameter named <code>code</code> with type of <code>&amp;str</code>. <code>&amp;str</code> is essentially a <code>&amp;[u8]</code> (<a href="http://doc.rust-lang.org/master/std/slice/">slice</a> of bytes) with the <a href="http://doc.rust-lang.org/std/str/#representation">guarantee that the bytes are valid UTF-8</a>. <code>fetch</code> returns an <a href="http://doc.rust-lang.org/std/io/type.IoResult.html"><code>IoResult&lt;Vec&lt;u8&gt;&gt;</code></a>, which can be matched into an either a <a href="http://doc.rust-lang.org/master/std/vec/struct.Vec.html"><code>Vec&lt;u8&gt;</code></a> or <a href="http://doc.rust-lang.org/std/io/struct.IoError.html"><code>IoError</code></a>. This value is matched against in <code>main</code> to determine between outputting the fetched data or an error message.</p>
+<h4 id="using-tcpstream.write">Using <code>TcpStream.write()</code>:</h4>
+<pre><code>    match stream.write(data_get.as_bytes()) {
+        Ok(_) =&gt; (),
+        Err(err) =&gt; return Err(err)
+    }</code></pre>
+<p>The call to <a href="http://doc.rust-lang.org/std/io/net/tcp/struct.TcpStream.html#method.write"><code>stream.write()</code></a> takes a slice of bytes. A byte slice conveniently holds its own length, so it’s not necessary to specify the number of bytes to write. <code>data_get</code> is an immutable String (this type is inferred by the <code>let</code> statement), and the method <a href="http://doc.rust-lang.org/master/std/string/struct.String.html#method.as_bytes"><code>as_bytes()</code></a> is called on it, returning an immutable byte slice.</p>
+<p>Because <code>stream.write()</code> returns an <code>IoResult</code>, it must be matched against to check for errors. Early termination via <code>return</code> occurs if there was an error.</p>
+<h4 id="using-tcpstream.read_to_end">Using <code>TcpStream.read_to_end()</code>:</h4>
+<pre><code>    let rv = stream.read_to_end();</code></pre>
+<p><a href="http://doc.rust-lang.org/std/io/net/tcp/struct.TcpStream.html#method.read_to_end"><code>stream.read_to_end()</code></a> is called, <code>rv</code> is assigned a return value of type <code>IoResult&lt;Vec&lt;u8&gt;&gt;</code>. This is the correct return type for the function, and the memory for the <code>Vec&lt;u8&gt;</code> will be allocated at the behest of the library call. <code>read_to_end()</code> is defined in <a href="https://github.com/rust-lang/rust/blob/dd348b3ab0147fda3dedbdc6947c14354971e14a/src/libstd/io/mod.rs#L686-L686"><code>rust/src/libstd/io/mod.rs</code></a>:</p>
+<pre><code>/// Reads all remaining bytes from the stream.
+///
+/// # Error
+///
+/// Returns any non-EOF error immediately. Previously read bytes are
+/// discarded when an error is returned.
+///
+/// When EOF is encountered, all bytes read up to that point are returned.
+fn read_to_end(&amp;mut self) -&gt; IoResult&lt;Vec&lt;u8&gt;&gt; {
+    let mut buf = Vec::with_capacity(DEFAULT_BUF_SIZE);
+    loop {
+        match self.push_at_least(1, DEFAULT_BUF_SIZE, &amp;mut buf) {
+            Ok(_) =&gt; {}
+            Err(ref e) if e.kind == EndOfFile =&gt; break,
+            Err(e) =&gt; return Err(e)
+        }
+    }
+    return Ok(buf);
+}
+
+</code></pre>
+<hr />
+<p>Thanks for reading.</p>
+<h4 id="special-thanks-to">Special thanks to:</h4>
+<p><a href="http://www.reddit.com/r/rust/comments/2ajpvy/a_simple_network_client_in_rust/civwlmv"><strong>dbaupp</strong></a> for pointing out that <code>IoError</code> can be directly printed and mentioning the <a href="http://doc.rust-lang.org/master/std/result/#the-try!-macro"><code>try!()</code></a> macro. I’ve decided to keep pattern matching to reveal details about handling <code>IoResult</code>.</p>
+<p><a href="https://news.ycombinator.com/reply?id=8048088"><strong>zokier</strong></a> for pointing out an incorrect assumption. I assumed that <code>read_to_end()</code> would only read <code>DEFAULT_BUF_SIZE</code> at most, but this was wrong.</p>
+
+    </content>
+    <hr />
+		<footer>
+      <small>Site powered by
+      <a href="http://jaspervdj.be/hakyll" target="_blank">Hakyll</a>.
+      <!--
+      and
+      <a href="https://www.nginx.com" target="_blank">nginx</a>.
+      --></small>
+		</footer>
+  </body>
+</html>

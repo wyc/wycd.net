@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>wyc - Logging Function Names in Go</title>
+		<link rel="stylesheet" href="../css/default.css" />
+	</head>
+	<body>
+    <header>
+      <h1>wyc's domain</h1>
+      <ul>
+        <li><a href="https://github.com/wyc" target="_blank">
+            <img src="../images/github.png" alt="GitHub">
+        </a></li>
+        <li><a href="https://www.linkedin.com/in/changwayne" target="_blank">
+            <img src="../images/linkedin.png" alt="LinkedIn">
+        </a></li>
+        <li><a href="https://twitter.com/wycdd" target="_blank">
+            <img src="../images/twitter.png" alt="Twitter">
+        </a></li>
+      </ul>
+    </header>
+    <nav>
+      <a href="../">Home</a> |
+      <a href="../blog.html">Blog</a> |
+      <a href="../projects.html">Projects</a> |
+      <a href="../consulting.html">Consulting</a>
+    </nav>
+		<hr />
+    <content>
+      <h2>Logging Function Names in Go</h2>
+      <div class="info">
+    Posted on July  2, 2014
+    
+</div>
+
+<div class="info">
+    
+    Tags: <a href="../tags/golang.html">golang</a>, <a href="../tags/programming.html">programming</a>
+    
+</div>
+
+<p><a href="http://www.reddit.com/r/golang/comments/2af8ri/logging_function_names_in_go/ciwzn90">TLDR</a>: <code>runtime.Caller()</code>, <code>runtime.FuncForPC()</code></p>
+<p>It’s often useful to see the name of the function emitting log messages. I frequently found myself manually inserting the function name into <code>log</code> calls:</p>
+<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go"><span class="kw">func</span> login() {
+	log.Println(<span class="st">&quot;login(): called&quot;</span>)
+    err := doSomething()
+    <span class="kw">if</span> err != <span class="ot">nil</span> {
+    	log.Println(<span class="st">&quot;login(): ERROR: doSomething failed&quot;</span>)
+    }
+    <span class="co">/* ... */</span>
+}</code></pre></div>
+<p>Go 1.3 provides flags to emit file names and line numbers in the standard <code>log</code> package, but these data are subject to frequent change and are therefore not as valuable. For example, in a 400-line source file, a line number alone might not have enough context for fast debugging. Fortunately, Go’s <code>runtime</code> package has great introspective tools that can be used to reveal the calling function’s name.</p>
+<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go"><span class="kw">package</span> main
+
+<span class="kw">import</span> (
+	<span class="st">&quot;log&quot;</span>
+	<span class="st">&quot;path/filepath&quot;</span>
+	<span class="st">&quot;runtime&quot;</span>
+	<span class="st">&quot;strings&quot;</span>
+)
+
+<span class="kw">var</span> (
+	LogE = log.New(LogWriter{}, <span class="st">&quot;ERROR: &quot;</span>, <span class="dv">0</span>)
+	LogW = log.New(LogWriter{}, <span class="st">&quot;WARN: &quot;</span>, <span class="dv">0</span>)
+	LogI = log.New(LogWriter{}, <span class="st">&quot;INFO: &quot;</span>, <span class="dv">0</span>)
+)
+
+<span class="kw">type</span> LogWriter <span class="kw">struct</span>{}
+
+<span class="kw">func</span> (f LogWriter) Write(p []<span class="dt">byte</span>) (n <span class="dt">int</span>, err <span class="dt">error</span>) {
+	pc, file, line, ok := runtime.Caller(<span class="dv">4</span>)
+	<span class="kw">if</span> !ok {
+		file = <span class="st">&quot;?&quot;</span>
+		line = <span class="dv">0</span>
+	}
+
+	fn := runtime.FuncForPC(pc)
+	<span class="kw">var</span> fnName <span class="dt">string</span>
+	<span class="kw">if</span> fn == <span class="ot">nil</span> {
+		fnName = <span class="st">&quot;?()&quot;</span>
+	} <span class="kw">else</span> {
+		dotName := filepath.Ext(fn.Name())
+		fnName = strings.TrimLeft(dotName, <span class="st">&quot;.&quot;</span>) + <span class="st">&quot;()&quot;</span>
+	}
+
+	log.Printf(<span class="st">&quot;%s:%d %s: %s&quot;</span>, filepath.Base(file), line, fnName, p)
+	<span class="kw">return</span> <span class="bu">len</span>(p), <span class="ot">nil</span>
+}
+
+<span class="kw">func</span> infoFunc() {
+	LogI.Println(<span class="st">&quot;information message&quot;</span>)
+}
+
+<span class="kw">func</span> warnFunc() {
+	LogW.Println(<span class="st">&quot;warning message&quot;</span>)
+}
+
+<span class="kw">func</span> errorFunc() {
+	LogE.Println(<span class="st">&quot;error message&quot;</span>)
+}
+
+<span class="kw">func</span> main() {
+	infoFunc()
+	warnFunc()
+	errorFunc()
+}</code></pre></div>
+<p>Output:</p>
+<pre><code>2009/11/10 23:00:00 prog.go:39 infoFunc(): INFO: information message
+2009/11/10 23:00:00 prog.go:43 warnFunc(): WARN: warning message
+2009/11/10 23:00:00 prog.go:47 errorFunc(): ERROR: error message</code></pre>
+<p>See for yourself: http://play.golang.org/p/uSNxYUAXHD</p>
+<p>Because the code simply fits a <code>log.Logger</code> with a custom <code>io.Writer</code>, all of the <code>log</code> package APIs are available for use (e.g. Print, Println, Printf, etc).</p>
+<p>Also available as a package (you might want to hold off using it until there’s at least a readme and some tests): https://github.com/wyc/funclog</p>
+<div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go">
+<span class="kw">package</span> main
+
+<span class="kw">import</span> <span class="st">&quot;github.com/wyc/funclog&quot;</span>
+
+<span class="kw">func</span> main() {
+        LogI := funclog.New(<span class="st">&quot;INFO: &quot;</span>)
+        LogI.Println(<span class="st">&quot;informative message&quot;</span>)
+        c := <span class="bu">make</span>(<span class="kw">chan</span> <span class="dt">bool</span>)
+        <span class="kw">go</span> <span class="kw">func</span>() {
+        	LogI.Println(<span class="st">&quot;other informative message&quot;</span>)
+            c &lt;- <span class="ot">true</span>
+        }
+        &lt;-c <span class="co">/* wait for the goroutine */</span>
+}</code></pre></div>
+<p>Future work involves accepting a custom writer (maybe not using <code>log.Printf</code> as a crutch). Currently, <code>log.SetOutput</code> will direct the output of <code>funclog</code>.</p>
+<p>It’s also possible to log live callstacks (using ASCII nesting) by using the tools in <code>runtime/pprof</code>.</p>
+
+    </content>
+    <hr />
+		<footer>
+      <small>Site powered by
+      <a href="http://jaspervdj.be/hakyll" target="_blank">Hakyll</a>.
+      <!--
+      and
+      <a href="https://www.nginx.com" target="_blank">nginx</a>.
+      --></small>
+		</footer>
+  </body>
+</html>
