@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>wyc - Creating a Bootable Windows 10 USB Drive on Linux</title>
+		<link rel="stylesheet" href="../css/default.css" />
+	</head>
+	<body>
+    <header>
+      <h1>wyc's domain</h1>
+      <ul>
+        <li><a href="https://github.com/wyc" target="_blank">
+            <img src="../images/github.png" alt="GitHub">
+        </a></li>
+        <li><a href="https://www.linkedin.com/in/changwayne" target="_blank">
+            <img src="../images/linkedin.png" alt="LinkedIn">
+        </a></li>
+        <li><a href="https://twitter.com/wycdd" target="_blank">
+            <img src="../images/twitter.png" alt="Twitter">
+        </a></li>
+      </ul>
+    </header>
+    <nav>
+      <a href="../">Home</a> |
+      <a href="../blog.html">Blog</a> |
+      <a href="../projects.html">Projects</a> |
+      <a href="../consulting.html">Consulting</a>
+    </nav>
+		<hr />
+    <content>
+      <h2>Creating a Bootable Windows 10 USB Drive on Linux</h2>
+      <div class="info">
+    Posted on March 10, 2015
+    
+</div>
+
+<div class="info">
+    
+    Tags: <a href="../tags/windows.html">windows</a>, <a href="../tags/linux.html">linux</a>
+    
+</div>
+
+<p>I ran into this problem recently, and it took me a while to solve it because I couldn’t find very good material online. I hope this post helps some people reduce their frustrations.</p>
+<h4 id="ingredients">Ingredients</h4>
+<ul>
+<li>Recent version of <a href="http://ms-sys.sourceforge.net/">ms-sys</a> (check your package manager)</li>
+<li>Windows Installation ISO (we’ll call this <code>winstall.iso</code>)</li>
+<li>USB drive &gt;= 8 GB with no data worth keeping</li>
+<li><a href="http://www.tuxera.com/community/ntfs-3g-download/">ntfs3g</a> (NTFS kernel config must be enabled/as module)</li>
+</ul>
+<h4 id="instructions">Instructions</h4>
+<ol style="list-style-type: decimal">
+<li>Plug the drive in. We’ll assume that it comes up as <code>/dev/sdX</code>.</li>
+<li>Destroy the old partition table. <code># dd if=/dev/zero of=/dev/sdX bs=512 count=1 conv=notrunc</code></li>
+<li>Partition the disk. <code># echo -e &quot;n\np\n1\n\n\nt 1\n7\nw\n&quot; | fdisk /dev/sdX</code></li>
+<li>Create the NTFS file system. <code># mkfs.ntfs -f /dev/sdX1</code></li>
+<li>Create mounting directories. <code># mkdir -p /mnt/usb /mnt/iso}</code></li>
+<li>Mount the installation ISO. <code># mount -o loop winstall.iso /mnt/iso</code></li>
+<li>Mount the USB drive. <code># mount /dev/sdX1 /mnt/usb</code></li>
+<li>Copy over files (<code>-a</code> for archive mode, <code>-v</code> for verbose). <code># cp -av /mnt/iso/* /mnt/usb/</code></li>
+<li>Unmount everything. <code># umount /mnt/usb /mnt/iso</code></li>
+<li>This is where it gets a bit strange. Windows uses the disk MBR to load the partition EBR for boot, so we must prepare both.</li>
+<li>Prepare the partition EBR. <code># ms-sys -n /dev/sdX1</code></li>
+<li>Prepare the disk MBR. <code># ms-sys -7 /dev/sdX</code></li>
+<li>Wait for the buffer cache to flush. <code># sync</code></li>
+<li>Reboot into the USB drive.</li>
+</ol>
+<h4 id="troubleshooting">Troubleshooting</h4>
+<p><em>The installer won’t proceed after I select a disk with the error “we couldn’t create a new partition or locate an existing one”.</em> I had to unplug my primary Linux HDD’s SATA cable so that the Windows drive was the only one.</p>
+
+    </content>
+    <hr />
+		<footer>
+      <small>Site powered by
+      <a href="http://jaspervdj.be/hakyll" target="_blank">Hakyll</a>.
+      <!--
+      and
+      <a href="https://www.nginx.com" target="_blank">nginx</a>.
+      --></small>
+		</footer>
+  </body>
+</html>

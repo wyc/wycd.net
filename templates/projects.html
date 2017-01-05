@@ -1,0 +1,45 @@
+---
+title: Projects
+---
+
+<p>Open-ended projects that have become hobbies:</p>
+
+<ul>
+    $for(projects)$
+        $if(externalUrl)$
+        $else$
+        <li>
+          <span>
+            <a href="$url$">$title$</a>
+            $if(tagline)$
+              - $tagline$
+            $endif$
+          </span>
+          $if(summary)$
+            <p>$summary$</p>
+          $endif$
+        </li>
+        $endif$
+    $endfor$
+</ul>
+
+<p>A few projects I've worked on for my job, fun, or learning:</p>
+
+<ul>
+    $for(projects)$
+        $if(externalUrl)$
+        <li>
+          <span>
+            <a href="$externalUrl$">$title$</a>
+            $if(tagline)$
+              - $tagline$
+            $endif$
+          </span>
+          $if(summary)$
+            <p>$summary$</p>
+          $endif$
+        </li>
+        $endif$
+    $endfor$
+</ul>
+

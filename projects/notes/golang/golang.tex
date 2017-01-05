@@ -1,0 +1,403 @@
+\documentclass[12pt]{article}
+\bibliographystyle{plain}
+
+\usepackage{hyperref}
+
+\title{Notes on Golang}
+
+\author{wycd.net}
+
+\date{January, 2014}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This is a collection of non-comprehensive notes by a programmer learning the
+Go programming language who was previously familiar with C and C++. These
+notes are meant to provide clarification for language features with examples.
+Although the Golang specs are already very clear, it could prove helpful to
+have additional examples of usage. If desired, please email any errors or
+ambiguities to \texttt{mail@wycd.net}.
+
+\mbox{}\\
+\texttt{go version go1.1.2 linux/amd64}
+\end{abstract}
+
+\tableofcontents
+\clearpage
+
+\section{Syntax}
+\subsection{Variables}
+\begin{itemize}
+    \item All variables are implicitly initialized to their zero-value.
+
+    \url{http://golang.org/ref/spec#The_zero_value}
+    \item No implicit conversions. \texttt{T(v)} must be used to convert
+          the value \texttt{v} to the type \texttt{T}:
+        \begin{verbatim}
+var i int = 42
+var f float64 = float64(i)
+var u uint = uint(f)
+        \end{verbatim}
+    \item These are the same:
+        \begin{verbatim}
+var foo string = "text"
+var foo = "text"
+foo := "text"
+        \end{verbatim}
+    \item All types implement the empty interface \texttt{interface\{\}}
+    \item Type assertion may be used \texttt{x.(T)} to verify an expression
+          \texttt{x} of \texttt{interface\{\}} type is not \texttt{nil} and
+          stores a value of type \texttt{T}.
+    \item Type inference with decimal numbers results in \texttt{float64}.
+        \begin{verbatim}
+var t interface{} = 1.0 /* for type assertion */
+f64 := t.(float64)      /* okay */
+f32 := t.(float32)      /* error */
+        \end{verbatim}
+    \item Selectors dereference pointers to structs automatically.
+        \begin{verbatim}
+type Person struct { name string }
+
+var (
+    o = Person{name: "Fred"}
+    p = &o
+)
+
+func main() {
+    /* the following statements have the same effect */
+    o.name = "George"
+    p.name = "George"
+}
+
+        \end{verbatim}
+
+    \item structs may have anonymous fields and can then satisfy methods
+          that have receivers for those field types. The field is
+          \textit{promoted} and can by accessed by a selector with that
+          type's name.
+        \begin{verbatim}
+package main
+
+import "fmt"
+
+type Int int
+
+type IntWrap struct {
+        Int
+}
+
+func (i Int) test() {
+        fmt.Println("test okay:", i)
+}
+
+func main() {
+        a := IntWrap{42} 
+        a.test()
+    fmt.Println("tested value:", a.Int)
+}
+        \end{verbatim}
+          
+    \item The \texttt{new(T)} allocates space for a T value and
+          returns its address.
+          \begin{verbatim}
+var i *int = new(int)
+fmt.Println(*i)
+          \end{verbatim}
+
+    \item Slices (e.g. \texttt{[]int}) are wrappers around arrays
+          containing metadata, allowing for convenient features
+          such as (fake) dynamic sizing. They must be created with
+          \texttt{make()}. See \\
+          \url{http://blog.golang.org/go-slices-usage-and-internals}.
+
+          \begin{verbatim}
+var s []int = make([]int, 5, 10) /* s is [0 0 0 0 0] */
+len(s) /* 5 */
+cap(s) /* 10 */
+
+s = s[:cap(s)] /* s is [0 0 0 0 0 0 0 0 0 0] */
+len(s) /* 10 */
+cap(s) /* 10 */
+
+s = s[2:] /* s is [0 0 0 0 0 0 0 0]                  */
+          /* elements 0 and 1 are now "lost forever" */
+          /* ...no such thing as s[-2:]              */
+          \end{verbatim}
+    \item Maps are created with \texttt{make()} and work like maps
+        in any other language. They can return an optional value \texttt{ok}
+        which is \texttt{true} if the value exists and \texttt{false} if not.
+        If the value does not exist, the type's default \texttt{zero value}
+        is returned as the value. In gc version 6g, maps are implemented as
+        hashmaps: \url{http://golang.org/src/pkg/runtime/hashmap.c}.
+        \begin{verbatim}
+m := make(map[string]int)
+m["hello"] = 4
+value := m["hello"] /* value is 4 */
+value, ok := m["hello"] /* value is 4, ok is true */
+value, ok = m["cheese"] /* value is 0, ok is false */
+\end{verbatim}
+    \item Channels work like pipes. They behave like FIFO data structures
+          and are safe to use concurrently. Data goes in direction of the
+          \texttt{<-} arrows. They will block on send or receive by default.
+        \begin{verbatim}
+ic := make(chan int)      /* make a channel that can pass ints */
+go func() { ic <- 5 }()   /* send 5 into ic (blocking until received) */
+val := <- ic              /* receive the 5 from ic into val */
+        \end{verbatim}
+    \item Channels may be created with a buffer size as a second argument
+          to the \texttt{make()} function. The default buffer size is zero,
+          causing channel senders to block until a channel receiver dequeues
+          the value. With buffers, queueing without a channel receiver becomes
+          a non-blocking operation as long as the channel is not full.
+        \begin{verbatim}
+ic := make(chan int, 100) /* make buffered channel that can pass ints */
+ic <- 5                   /* send 5 into ic (non-blocking due to buffer) */
+val := <- ic              /* receive the 5 from ic into val */
+        \end{verbatim}
+\end{itemize}
+
+
+\subsection{Control Flow}
+\begin{itemize}
+    \item \texttt{if...else} statements may have a initializing
+        statement, and they require braces but not parentheses.
+      \begin{verbatim}
+if f := 1; f < 3 {
+    ...
+} else {
+    ...
+}
+          \end{verbatim}
+    \item The \texttt{range} clause of the for loop allows for iteration
+          over slices or maps.
+          
+          \begin{tabular}{| l | l | l | l |}
+          \hline
+          \texttt{Range Expression} &
+          \texttt{Literal Expression} &
+          \texttt{1st value} &
+          \texttt{2nd value} \\
+          \hline
+          \texttt{array or slice} &
+          \texttt{a  [n]E, *[n]E, or []E} &
+          \texttt{index    i  int} &
+          \texttt{a[i]       E} \\
+          \hline
+          \texttt{string} &
+          \texttt{s  string type} &
+          \texttt{index    i  int} &
+          \texttt{r rune} \\
+          \hline
+          \texttt{map} &
+          \texttt{m  map[K]V} &
+          \texttt{key      k  K} &
+          \texttt{m[k]       V} \\
+          \hline
+          \texttt{channel} &
+          \texttt{c  chan E, <-chan E} &
+          \texttt{element  e  E} & \\
+          \hline
+          \end{tabular}
+          \bigskip
+
+          More information and above table source here:
+          \url{http://golang.org/ref/spec#For_statements}
+        \begin{verbatim}
+shifts := []int{1, 2, 4, 8, 16, 32}
+for i, v := range shifts { /* i is optional */
+    fmt.Printf("1 << %d = %d\n", i, v)
+}
+        \end{verbatim}
+    \item The \texttt{switch} statement automatically terminates at the end
+    of a case, but may fallthrough to subsequent cases using the
+    \texttt{fallthrough} keyword. Case statements evaluate expressions if not
+    given a variable to match against.
+        \begin{verbatim}
+v := 5
+switch { /* if...else style-usage */
+case v%2 == 0:
+    fmt.Println("even")
+default:
+    fmt.Println("odd")
+}
+
+c := ' '
+switch c { /* match-style usage */
+case ' ', '\t', '\n', '\r':
+    fmt.Println("space")
+default:
+    fmt.Println("not a space")
+    
+}
+        \end{verbatim}
+    \item The \texttt{select} statement is structured like the switch
+        statement, but has the main functionality of triggering depending
+        on what \texttt{channel}s are available.
+        \begin{verbatim}
+var c1, c2 chan int
+select {
+case c1 <- (<-c2):
+        fmt.Println("popped a value from c2 into c1")
+        break
+default:
+        fmt.Println("either c2 or c1 not ready")
+}
+        \end{verbatim}
+\end{itemize}
+    
+\subsection{Functions}
+\begin{itemize}
+    \item These are the same:
+        \begin{verbatim}
+func add(x int, y int) int {...} 
+func add(x, y int) int {...}
+        \end{verbatim}
+    \item Functions can return multiple values:
+        \begin{verbatim}
+func beginningMiddleEnd(x float64) (float64, float64, float64) {
+    return 0.0, (x / 2), x
+}
+
+func main() {
+    b, m, e := beginningMiddleEnd(12)
+}
+        \end{verbatim}
+        Note that these return values do not form a first-class object,
+        so they may not be accessed as members (i.e. \texttt{f()[0]}).
+    \item Named return variables allow for implicit return values.
+        \begin{verbatim}
+func polarToCartesian(r, theta float64) (x, y float64) {
+    x = r * math.Cos(theta)
+    y = r * math.Sin(theta)
+    return
+}
+        \end{verbatim}
+
+    \item Functions may be assigned to variables because they are values.
+        \begin{verbatim}
+var inc func(int) int = func(x int) int {
+    return x + 1
+}
+        \end{verbatim}
+    \item A function may be a closure and reference variables outside of its
+    body. 
+        \begin{verbatim}
+func accumulator() func(int) []int {
+    s := make([]int, 0)
+    return func(x int) []int {
+        s = append(s, x)
+        return s
+    }
+}
+
+func main() {
+    var acc func(int) []int = accumulator()
+    acc(4)
+    acc(3)
+    acc(2)
+    acc(1)
+    acc(0) /* expression is [4 3 2 1 0] */
+}
+        \end{verbatim}
+
+    \item goroutines allow for concurrency. It is used as \texttt{go f()}
+        to run \texttt{f()} as a parallel goroutine. Channels are commonly
+        used to control goroutines, but Go also provides locks and wait groups
+        in standard \texttt{sync} package. However, there are currently not
+        provided methods similar to \texttt{join} for threads. The function
+        call may be a closure:
+        \begin{verbatim}
+package main
+
+import "fmt"
+
+func main() {
+    done := make(chan bool)
+    go func() { fmt.Println("test"); done <- true }()
+    <-done
+}
+        \end{verbatim}
+
+\end{itemize}
+
+\subsection{Methods and Interfaces}
+\begin{itemize}
+    \item Methods are ``glued'' on to struct types.
+        \begin{verbatim}
+type Rectangle struct {
+    W, H float64
+}
+
+func (r *Rectangle) Area() float64 {
+    return r.W * r.H
+}
+
+func main() {
+    var r *Rectangle = &Rectangle{8, 10}
+    var area float64 = r.Area()
+}
+        \end{verbatim}
+    \item In the above function definition for \texttt{Area()}, the text
+          \texttt{(r *Rectangle)} represents a \textit{receiver} for the
+          type \texttt{*Rectangle}. Depending on if the type is
+          \texttt{*Rectangle} or \texttt{Rectangle}, the 
+          method receives a pointer to the original or a new copy,
+          respectively. 
+    \item Interfaces specify methods that must be implemented to be
+          considered that interface. ``No explicit declaration of
+          intent'' is required, and a type implements an interface
+          just by having all the required methods.
+        \begin{verbatim}
+type Shape interface {
+    Area() float64
+}
+
+type Rectangle struct {
+    W, H float64
+}
+
+func (r *Rectangle) Area() float64 {
+    return r.W * r.H
+}
+
+func main() {
+    var s Shape = &Rectangle{5, 10} /* this is fine */
+}
+        \end{verbatim}
+    \item In the above example, a method with the receiver
+        \texttt{(r Rectangle)} would have also sufficed because of
+        method sets. A pointer type \texttt{*T} has methods with
+        receivers of both \texttt{*T} and \texttt{T} in its method
+        set. 
+        
+        \url{http://golang.org/ref/spec#Method_sets}
+\end{itemize}
+
+\section{Packages}
+\subsection{\texttt{fmt}}
+\begin{itemize}
+    \item \texttt{fmt} printing methods can print values of primitives
+        and try to use reflection to call the \texttt{String()} routine
+        of an object. They will otherwise try to print the object's address
+        in \texttt{\&\{0xdeadbeef\}} form. See \texttt{printArg()} in
+        \texttt{fmt/print.go} for details.
+    \item \texttt{fmt.Println(arg0, arg1, ...)} automatically adds a
+        space between arguments when printing.
+\end{itemize}
+
+\subsection{\texttt{errors}}
+\begin{itemize}
+    \item The built-in interface type \texttt{error} only has one method
+        \texttt{Error() string}. Anything satisfying this implements the
+        \texttt{error} interface.
+\end{itemize}
+
+\clearpage
+
+\nocite{*}
+\bibliography{references}
+
+\end{document}
+

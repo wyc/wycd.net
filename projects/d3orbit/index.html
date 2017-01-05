@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>d3orbit</title>
+    <script type='text/javascript' src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script type='text/javascript' src='http://d3js.org/d3.v3.min.js'></script>
+    <script type='text/javascript' src='./d3orbit.js'></script>
+    <style type='text/css'>
+      body {
+        background-color: black;
+      }
+    </style>
+    <script type='text/javascript'>//<![CDATA[ 
+    window.onload = function() {
+
+      function randomBrightColor() {
+        var r = Math.floor(32 + Math.random() * 223).toString(16);
+        var g = Math.floor(32 + Math.random() * 223).toString(16);
+        var b = Math.floor(32 + Math.random() * 223).toString(16);
+        return '#' + r + g + b;
+      }
+
+      /* fuzzy(10, 0.2) returns a uniformly-distributed value within 20% of 10. for n, f >= 0 */
+      function fuzzy(n, f) { return n + f * (Math.random() * 2 * n - n); }
+      
+      function giveSatellite(body, radius, distance, period) {
+        var satellite = svg.append("circle")
+          .attr("cx", w/2).attr("cy", h/2)
+          .attr("r", radius).style("fill", randomBrightColor());
+        var o = new Orbit();
+        var distance = distance;
+        var period = period;
+        var phase = Math.random() * 2 * Math.PI;
+        o.initialize(satellite, body, distance, period, phase);
+        o.startOrbit();
+        return satellite;
+      }
+
+      var w = $(window).width() - 50;
+      var h = $(window).height() - 50;
+
+      var svg = d3.select("body").append("svg")
+        .attr("width", w).attr("height", h);
+
+      var b = Math.min(w, h);
+
+      var starCount = 50 + Math.random() * (b / 100);
+      for (var i = 0; i < starCount; i++) {
+        svg.append("circle")
+          .attr("cx", Math.random() * w)
+          .attr("cy", Math.random() * h)
+          .attr("r", Math.abs(fuzzy(1, 2)))
+          .style("fill", randomBrightColor());
+      }
+
+      var star = svg.append("circle")
+        .attr("cx", w/2).attr("cy", h/2).attr("r", b/20).style("fill", randomBrightColor());
+
+      var planetCount = 8 + Math.random() * 9; 
+      for (var i = 0; i < planetCount; i++) {
+        var radius = fuzzy(b/60, 0.5);
+        var distance = b/20 + fuzzy(60, 0.2) * (i + 1);
+        var period = fuzzy(10 * Math.pow(distance, 1.5), 0.4);
+        var planet = giveSatellite(star, radius, distance, period);
+
+        var moonCount = Math.random() * 3;
+        for (var j = 0; j < moonCount; j++) {
+          var radius = fuzzy(b/400, 0.6);
+          var distance = b/40 + fuzzy(10, 0.2);
+          var period = fuzzy(10 * Math.pow(distance, 1.5), 0.4);
+          giveSatellite(planet, radius, distance, period);
+        }
+      }
+    }//]]>  
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
+

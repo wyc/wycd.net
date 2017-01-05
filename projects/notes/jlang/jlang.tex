@@ -1,0 +1,160 @@
+\documentclass[12pt]{article}
+\bibliographystyle{plain}
+
+\usepackage{hyperref}
+\usepackage{amsmath}
+
+\title{Notes on Jlang}
+
+\author{wycd.net}
+
+\date{January, 2014}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This is a collection of non-comprehensive notes by a programmer learning the
+J programming language who was previously familiar with C and C++. These
+notes are meant to provide clarification for language features with examples.
+If desired, please email any errors or ambiguities to \texttt{mail@wycd.net}.
+
+\mbox{}\\
+\texttt{j64-701}
+\end{abstract}
+
+\tableofcontents
+\clearpage
+
+\section{Syntax}
+\subsection{Arithmetic}
+\begin{tabular}{|l|l|l|}
+\hline
+Operation & Expression & J Expression \\
+\hline
+Addition & ($x + y$) & \texttt{x + y} \\
+Multiplication & ($x * y$) & \texttt{x * y} \\ 
+Subtraction & ($x - y$) & \texttt{x - y} \\
+Division & ($\frac{x}{y}$) & \texttt{x \% y} \\
+Modulo & ($x\ mod\ y$) & \texttt{y | x} \\
+Reciprocal & ($x^{-1}$) & \texttt{\% x} \\
+Negation & ($-x$) & \texttt{- x} \\
+Power & ($x^y$) & \texttt{x \^{} y} \\
+Squared & ($x^2$) & \texttt{*: x} \\
+Square Root & ($\sqrt{x}$) & \texttt{\%: x} \\
+Double & ($2x$) & \texttt{+: x} \\
+Halve  &($\frac{1}{2}x$) & \texttt{-: x} \\
+Signum & ($sgn(x)$) & \texttt{* x} \\
+Exponential & ($e^{x}$) & \texttt{\^{} x} \\
+Natural Log & ($ln(x)$) & \texttt{\^{}. x} \\
+Log & ($log_y(x)$) & \texttt{y \^{}. x} \\
+Pi Times & ($\pi x$) & \texttt{o. x} \\
+Factorial & ($x!$) & \texttt{! x} \\
+Floor & ($\lfloor x \rfloor$) & \texttt{<. x} \\
+Ceiling & ($\lceil x \rceil$) & \texttt{>. x} \\
+Sine  &($sin(x)$) & \texttt{1 o. x} \\
+Cosine & ($cos(x)$) & \texttt{2 o. x} \\
+Tangent & ($tan(x)$) & \texttt{3 o. x} \\
+\hline
+Complex (Dyadic) & ($Complex(\{x, y\}) \implies x + yi$) & \texttt{x j. y} \\
+Complex (Monadic) & ($Complex(x) \implies xi$) & \texttt{j. x} \\
+Magnitude, Angle & ($\{|x|, \angle x\}$) & \texttt{*. x} \\
+Real, Imaginary & ($\{Re\{x\}, Im\{x\}\}$) & \texttt{+. x} \\
+Conjugate & ($x^{*}$) & \texttt{+ x} \\
+Magnitude & ($|x|$) & \texttt{| x} \\
+\hline
+\end{tabular}
+
+\bigskip
+
+Negative numbers are represented with a leading underscore: e.g. \texttt{\_42}
+This allows for discrimination between the negative sign of a literal number
+and the operator \texttt{-}.
+
+\bigskip
+
+Complex numbers are expressed in the form \texttt{xjy}, where $x$ is the real
+part and $y$ is the imaginary in $x + yi$. The $j$ notation was most likely
+chosen as not to conflict with the \texttt{i.} integer operator, but it is
+convenient that this is the same notation used in electrical engineering.
+$3 + 5i$ may be expressed as \texttt{3j5}.
+
+\subsection{Evaluation Order}
+Unless parentheses are used, J always evaluates from \textbf{right to left}.
+The following are the same:
+\begin{verbatim}
+2 * 8 + 4 % 3 - 2
+2 * (8 + (4 % (3 - 2)))
+\end{verbatim}
+
+\subsection{Monads and Dyads}
+The same symbol may have different meanings depending on the context. For
+example, the symbol \texttt{-} may be used for subtraction if placed between
+two numbers (\texttt{4 - 2}), but it may also be used for negation if there
+is only one number (\texttt{-4}). A function with a single argument on its
+right is called a monadic function (monad) while a function taking one argument
+on each side is called a dyadic function (dyad). The monad \texttt{- x} has
+different functionality than the dyad \texttt{x - y}.
+
+\subsection{Types}
+Thre are four primitive types in J: \textbf{number, character, box, and symbol}.
+There are six subtypes of number two subtypes of character plus there are
+sparse versions of some of the types. Boxes are general-purpose containers
+while symbols consist of the operators in the J language.
+
+The full list can be found at
+\url{http://www.jsoftware.com/docs/help701/dictionary/dx003.htm}
+
+\subsection{Parts of Speech}
+Functions in J are known as \textbf{verbs} because they operate on expressions
+which are known as \textbf{nouns}. For example, in the expression
+\texttt{2 + 3}, the verb \texttt{+} dyadically operates on the nouns \texttt{2}
+and \texttt{3} to yield the noun \texttt{5}. In \texttt{*: 8}, the square verb
+\texttt{*:} operates on the single noun \texttt{8} to yield the noun 
+texttt{64}.
+
+\paragraph{}
+\texttt{Adverbs} are operators that act upon and modify the behavior of
+functions just as adverbs in English affect verbs. For example, the Insert
+adverb \texttt{/} causes a verb to be inserted between all elements in a
+list. These are the same:
+\begin{verbatim}
++/ 1 2 3 4 5
+1 + 2 + 3 + 4 + 5
+\end{verbatim}
+The new verb \texttt{+/} is formed by the verb and adverb, and might be
+labeled \texttt{sum =: +/} for convenience. Adverbs always 
+
+
+
+
+\subsection{Notation}
+Throughout the J literature,
+\begin{itemize}
+\item Noun arguments to a verb are \texttt{x} and \texttt{y}
+     (e.g. \texttt{x + y}).
+\item Verb arguments to a conjunction are \texttt{u} and \texttt{v}
+     (e.g. \texttt{u @ v}).
+\item Verbs can also be \texttt{f}, \texttt{g}, and \texttt{h}
+     (e.g. \texttt{x (f g h) y}).
+\item Noun arguments to a conjunction are \texttt{m} and \texttt{n}
+     (e.g. \texttt{m " n}).
+\end{itemize}
+
+\subsection{Arrays and Operations}
+The name \texttt{array} in J refers to a data object with a number of
+dimensions. Scalars (0-dimensional), lists (1-dimensional) and tables
+(2-dimensional) are all considered arrays. Scalars can be expressed by
+single terms such as \texttt{5}, \texttt{3j5}, or \texttt{1.25}. Lists
+can be constructed from adjacent scalars such as \texttt{1 2 3 4 5},
+\texttt{1.1 1.25 3j3 1 3 9 7}, or \texttt{'abcde'}. 
+
+The Shape verb \texttt{\$} can be used to manipulate 
+
+\clearpage
+
+\nocite{*}
+\bibliography{references}
+
+\end{document}
+

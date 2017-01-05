@@ -1,0 +1,148 @@
+\documentclass[12pt]{article}
+\bibliographystyle{plain}
+
+\usepackage{hyperref}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{accents}
+\usepackage{xcolor}
+\usepackage{alltt}
+
+\title{Notes on Probability}
+
+\author{wycd.net}
+
+\date{Spring, 2014}
+
+\begin{document}
+\maketitle
+
+\tableofcontents
+\clearpage
+
+\section{Definitions}
+A \textbf{sample space} is the set of all possible outcomes of an experiment.
+
+An \textbf{event} is a subset of the sample space.
+
+\textbf{Naive definition of probability:}
+
+$P(A) = \frac{\text{# favorable outcomes}}{\text{# possible outcomes}}$
+
+Assumes all outcomes equally likely, finite sample space.
+
+\subsection{Counting}
+Multiplication Rule: there is an experiment with $n_1$ possible outcomes, and
+for each outcome of the first expression there are $n_2$ outcomes for the 2nd
+expresssion, ...., for each there are $n_r$ outcomes for the $r$th expression,
+then there are $n_1n_2...n_r$ overall possible outcomes.
+
+Binomial Coefficient: $n \choose k = \frac{n!}{(n-k)!k!}; 0 if k > n$
+
+Probability of a full house in poker: $\frac{13 \times 4 \choose 3 \times 12 \times 4 \choose 2}{52 \choose 5}$
+
+Sampling table: choose $k$ objects out of $n$.
+Replace, Order Matters: $n^k$
+Replace, Order Doesn't Matter: ${n + k -1} \choose k$
+Don't Replace, Order Matters: $n(n-1)...(n-k+1)$
+Don't Replace, Order Doesn't Matter: $n \choose k$
+
+Replace, Order Doesn't Matter : how many ways are there to put $k$ indistinguishable particles into $n$ distinguishable boxes?
+
+Imagine separators. $n+k-1$ positions, choose $k$ or $n-1$
+
+Story Proof:
+
+Proof by interpretation.
+
+$n{n-1} \choose {k-1} = k{n} \choose {k}$
+
+Pick $k$ people out of $n$, with one designated as the president.
+
+${m+n} \choose {k} = \sum_{j=0}^{k}{m \choose k}{n \choose k - j}$ (Vandermonde)
+
+\section{Probability}
+Non-naived definition: A \textbf{probability sample} consists of $S$ and $P$, where $S$ is a sample space, and $P$ is a function which takes an event $A \subseteq S$ as input, and return $P(A) \in [0, 1]$ as outputs.
+
+Such that
+
+(1) $P(\phi) = 0, P(S) = 1$
+
+(2) $P(U^{\infty}_{n=1}A_n) = \sum_{n=1}{\infty} P(A_n) if \forall i A_i is disjoint$
+
+Properties:
+
+(1) $P(A^c) = 1 - P(A)$
+\[P(A^c + A)\]
+(2) If $A \subseteq B$, then $P(A) \le P(B)$.
+\[B = A \cup (B \cap A^c)\]
+
+(3) $P(A \cup B) = P(A) + P(B) - P(A \cap B)$
+\[P(A \cup B) = P(A \cup (B \cap A^c))\]
+\[= P(A) + P(B \cap A^C)\]
+\[\stackrel{?}{=}P(A) + P(B) - P(A \cap B)\]
+\[P(A\cap B) + P(B\cap A^c) = P(B)\]
+
+
+Birthday Problem:
+
+Use stars and bars.
+
+n - 1
+n - k + 1
+
+(Inclusion-Exclusion)
+
+$P(A\cup B\cup C) = P(A) + P(B) + P(C) - P(A\cap B) - P(A \cap C) - P(B \cap C) + P(A\cap B\cap C)$
+
+$P(A\cup A_2\cup ...\cup A_n) = \sum_{j = 1}^n - \sum_{i<j} P(A_i \cap A_j) + \sum_{}$
+
+deMontmort's Problem, matching
+
+n cards labeled 1, 2, ..., n. Let $A_j$ be the event ``jth card matches''
+
+$P(A_j) = \frac{1/n}$ since all positions are equally likely for card labeled j.
+
+$P(A_1 \cap A_2) = \frac{(n-2)!}{n!} = \frac{1}{n(n-1)}$
+
+$P(A_1 \cap ... \cap A_n) = \frac{(n-k)!}{k}$
+
+\[(P(A_1\cap ...\cap A_k) = \frac{(n-k)!{n!}, there are {n \choose k} such terms\]
+
+Independent if
+\[P(A\cap B) = P(A\cup B)\]
+
+A, B, C are independent if $P(A,B) = P(A)P(B), P(A,C) = P(A)P(C), P(B,C) = P(B)P(C), P(A,B,C)=P(A)P(B)P(C)$
+
+Similarly for events $A_1,...,A_n$
+
+Newton-Pepys  Problem (1693)
+
+With fair dice, which is most likely?
+
+(A) at least one 6 with 6 dice
+
+(B) at least two 6 with 12 dice
+
+(C) at least three 6 with 18 dice
+
+\section{Conditional Probability}
+
+$P(A_1\cup A_2\cup A_n) = $
+
+$P(A|B) = \frac{P(A\capB)}{P(B)}$
+
+Intuition I:
+remove $B^c$ pebbles, renormalize to make mass 1 again
+
+Intuition II:
+frequentist world, repeat expt many times
+
+
+Theroem I: $P(A \cap B) = P(B)P(A|B) = P(A)P(B|A)$
+Theorem II: $P(A_1,...,A_n) = P(A_1)P(A_2k12k$
+
+
+
+\end{document}
+
