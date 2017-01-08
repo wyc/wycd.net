@@ -21,6 +21,10 @@ main = hakyll $ do
         route   idRoute
         compile compressCssCompiler
 
+    create ["robots.txt"] $ do
+        route   idRoute
+        compile copyFileCompiler
+
     match (fromList ["consulting.md"]) $ do
         route   $ setExtension "html"
         compile $ pandocCompiler
