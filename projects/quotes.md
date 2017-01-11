@@ -60,6 +60,9 @@ a problem, however."
 load being greater than the motivation to do work."
     - Keith Yost
 
+"You don't have to participate in the decision to control it. As long as you're
+controlling the logic, you're controlling the decision."
+    - Don Reinertsen
 
 
 </pre>
