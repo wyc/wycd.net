@@ -64,5 +64,7 @@ load being greater than the motivation to do work."
 controlling the logic, you're controlling the decision."
     - Don Reinertsen
 
+"If you get people together for a meeting about how important some topic is, then you know that you failed."
+    - Richard Cook
 
 </pre>

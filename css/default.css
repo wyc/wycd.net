@@ -50,6 +50,14 @@ content h3 {
   text-transform: uppercase;
 }
 
+content img {
+  width: 100%;
+}
+
+p.caption {
+  font-style: italic;
+}
+
 footer {
   margin: 20px 0;
 }
