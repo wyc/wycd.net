@@ -168,7 +168,7 @@ FB&quot;0 &gt;:i.100</code></pre>
 <p>Given 3 positive integer lengths to represent the sides of a triangle write a program that will determine the type of triangle: equilateral, isosceles, irregular, or impossible.</p>
 </blockquote>
 <p>We will solve it in fewer characters than the original prompt, though that’s not our main goal.</p>
-<pre class="j"><code>jconsole&gt; trigsort =:('Equilateral';'Isoceles';'Irregular';'Impossible') {::~ ((3&amp;,@(9 5 3 i. +/@;@(=/ ]))) {~ 2&amp;*@(&gt;./)&lt;+/)
+<pre class="j"><code>jconsole&gt; trigsort =:('Equilateral';'Isoceles';'Irregular';'Impossible'){::~3&amp;,@&lt;:@#@~.{~2&amp;*@(&gt;./)&lt;+/
 jconsole&gt; trigsort 1 1 1
 Equilateral
 jconsole&gt; trigsort 1 1 2
@@ -181,16 +181,16 @@ Irregular</code></pre>
 <pre><code>NB. Map of the results
 trigtype=:('Equilateral';'Isoceles';'Irregular';'Impossible') {::~ ]
 
-NB. Given an array of three positive numbers, return how many different values there are, minus one
-numtype =:9 5 3 i. +/@;@(=/])
+NB. Given an array of three numbers, return how many different values there are, minus one
+numtype =: &lt;:@#@~.
 
 NB. Given an array of three positive numbers, test for the triangle inequality, returning 1 if it holds and 0 otherwise
 validtrig =: 2&amp;*@(&gt;./) &lt; +/
 
 NB. Put everything together
-trigsort =: trigtype ((3&amp;,@numtype) {~ validtrig)
-</code></pre>
+trigsort =: trigtype ((3&amp;,@numtype) {~ validtrig)</code></pre>
 <p>It could probably be cleaned up even more, but I’m okay with how it is right now.</p>
+<p>Thank you <code>b_jonas</code> for improving on my kludge of <code>numtype =:9 5 3 i. +/@;@(=/])</code></p>
 <h2 id="why-do-this">Why do this</h2>
 <p>Why use J at all if it appears so unmaintainable? Well, maybe math looks unmaintainable too upon first glance. Or Chinese, or Arabic. J <em>excels</em> at representing high-dimensional computations (<em>ahem machine learning <em>barfs</em></em>) and has a very high density of algorithmic meaning. Doesn’t it make sense that in mathematics, we use the integral symbol instead of <code>A.Integral(B)</code>? IMHO, J and other languages in this family such as K, Q, and APL invent such a notation for computation. For example, here’s naive K-nearest neighbors implemented in J:</p>
 <pre><code>NB. naive k-nearest neighbors in J
@@ -203,6 +203,7 @@ k =: 3
 
 k {.&quot;1 /:&quot;1 query&amp;dist&quot;1 data</code></pre>
 <p>It does get easier. The operators start coming together as letters do to form words. The works of experienced others start reading like prose. It’s definitely a new experience, and I find it worthwhile.</p>
+<p>If you have more questions, there’s a wonderful IRC community in <code>#jsoftware</code> on freenode.</p>
 
     </content>
     <hr />
