@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>wyc - FizzBuzz in J, Explained</title>
+		<link rel="stylesheet" href="../css/default.css" />
+	</head>
+	<body>
+    <header>
+      <h1>wyc's domain</h1>
+      <ul>
+        <li><a href="https://github.com/wyc" target="_blank">
+            <img src="../images/github.png" alt="GitHub">
+        </a></li>
+        <li><a href="https://www.linkedin.com/in/changwayne" target="_blank">
+            <img src="../images/linkedin.png" alt="LinkedIn">
+        </a></li>
+        <li><a href="https://twitter.com/wycdd" target="_blank">
+            <img src="../images/twitter.png" alt="Twitter">
+        </a></li>
+      </ul>
+    </header>
+    <nav>
+      <a href="../">Home</a> |
+      <a href="../blog.html">Blog</a> |
+      <a href="../projects.html">Projects</a> |
+      <a href="../consulting.html">Consulting</a>
+    </nav>
+		<hr />
+    <content>
+      <h2>FizzBuzz in J, Explained</h2>
+      <div class="info">
+    Posted on January 19, 2017
+    
+</div>
+
+<div class="info">
+    
+    Tags: <a href="../tags/jlang.html">jlang</a>, <a href="../tags/software.html">software</a>, <a href="../tags/programming.html">programming</a>
+    
+</div>
+
+<p>Jeff Atwood famously wrote about <a href="https://blog.codinghorror.com/why-cant-programmers-program/">FizzBuzz</a> and how so many self-proclaimed programmers struggle with it. Let’s solve two such interview screener questions in <a href="http://jsoftware.com">J</a>, the open-source [APL](https://en.wikipedia.org/wiki/APL_(programming_language) descendant! I’ll try my best to describe my train of thought, and how I piece together the solution step-by-step, as reactions to J code samples range from “WTF?!?!?!” to “it looks like your cat chewed on your 56k line”. If you’re not familiar with J, it’s best to also be looking at the <a href="http://www.jsoftware.com/help/dictionary/vocabul.htm">J vocab page</a> while reading this. If you want to start learning from scratch, <a href="http://www.jsoftware.com/help/learning/01.htm">this tutorial</a> may be your best bet. On that note, here’s my solution to FizzBuzz:</p>
+<h2 id="fizzbuzz">FizzBuzz</h2>
+<h3 id="the-full-answer">The Full Answer</h3>
+<blockquote>
+<p>Write a program that prints the numbers from 1 to 100. But for multiples of three print “Fizz” instead of the number and for the multiples of five print “Buzz”. For numbers which are multiples of both three and five print “FizzBuzz”.</p>
+</blockquote>
+<pre class="j"><code>NB. FizzBuzz
+FB=:('FizzBuzz';'Fizz';'Buzz';&quot;:){::~0 i.~15 3 5|]
+FB&quot;0 &gt;:i.100</code></pre>
+<p>It may seem a little strange if you’re not familiar with array languages and <a href="https://en.wikipedia.org/wiki/Tacit_programming">tacit programming</a>, but assuredly, you can see how the <code>15 3 5</code> might correspond to <code>'FizzBuzz';'Fizz';'Buzz'</code>. Getting there is the fun!</p>
+<p>This is how the interpreter builds its syntax tree for the expression <code>FB</code>:</p>
+<pre><code>jconsole&gt; 5!:4 &lt;'FB'
+
+        ┌─ 'FizzBuzz'                  
+        ├─ ;                           
+  ┌─────┤            ┌─ 'Fizz'         
+  │     │            ├─ ;              
+  │     └────────────┤        ┌─ 'Buzz'
+  │                  └────────┼─ ;     
+  │                           └─ &quot;:    
+──┼─ ~ ─── {::                         
+  │                                    
+  │     ┌─ 0                           
+  │     ├─ ~ ────────── i.             
+  └─────┤                              
+        │            ┌─ 15 3 5         
+        └────────────┼─ |              
+                     └─ ]     
+</code></pre>
+<h3 id="the-choices">The Choices</h3>
+<p>First up, we have <code>('FizzBuzz';'Fizz';'Buzz';&quot;:)</code>. The operator <code>;</code> is very similar to <a href="http://www.lispworks.com/documentation/lw70/CLHS/Body/f_cons.htm"><code>cons</code> in Lisp</a>. It’s pretty apparent from the syntax tree that this is a close representation! The first elements are strings. The last element, <code>&quot;:</code>, is a function that will print a given value and must be applied before the “list” formation can occur. The <code>{::</code> operator retrieves a value from our “list” just as <a href="https://hackage.haskell.org/package/base-4.9.1.0/docs/Prelude.html#v:elem"><code>elem</code> in Haskell</a> does. In J, lists of the same atom type are best represented as arrays, and lists of mixed atom types must be represented by boxes. More details on this can be found <a href="http://www.jsoftware.com/help/dictionary/dicta.htm">here</a>.</p>
+<pre class="j"><code>jconsole&gt;    ('FizzBuzz';'Fizz';'Buzz';&quot;:) 1337
+┌────────┬────┬────┬────┐
+│FizzBuzz│Fizz│Buzz│1337│
+└────────┴────┴────┴────┘
+jconsole&gt; 0{::(('FizzBuzz';'Fizz';'Buzz';&quot;:) 1337)
+FizzBuzz
+jconsole&gt; 1{::(('FizzBuzz';'Fizz';'Buzz';&quot;:) 1337)
+Fizz
+jconsole&gt; 2{::(('FizzBuzz';'Fizz';'Buzz';&quot;:) 1337)
+Buzz
+jconsole&gt; 3{::(('FizzBuzz';'Fizz';'Buzz';&quot;:) 1337)
+1337
+jconsole&gt; 4{::(('FizzBuzz';'Fizz';'Buzz';&quot;:) 1337)
+|index error
+|   4    {::(('FizzBuzz';'Fizz';'Buzz';&quot;:)1337)</code></pre>
+<p>The <code>~</code> commutes, or switches, the operands of <code>{::</code>, <code>x {::~ y ↔ y {:: x</code>. This is what <a href="https://hackage.haskell.org/package/base-4.9.1.0/docs/Prelude.html#v:flip"><code>flip</code> does in Haskell</a>.</p>
+<pre class="j"><code>jconsole&gt; (('FizzBuzz';'Fizz';'Buzz';&quot;:) 1337){::~0
+FizzBuzz
+jconsole&gt; (('FizzBuzz';'Fizz';'Buzz';&quot;:) 1337){::~1
+Fizz
+jconsole&gt; (('FizzBuzz';'Fizz';'Buzz';&quot;:) 1337){::~2
+Buzz
+jconsole&gt; (('FizzBuzz';'Fizz';'Buzz';&quot;:) 1337){::~3
+1337</code></pre>
+<h3 id="the-selector-expression">The Selector Expression</h3>
+<p>Now let’s look at the second half of this expression, <code>(0 i.~15 3 5|])</code>. We can feed it some values like this:</p>
+<pre class="j"><code>jconsole&gt; a=:(0 i.~15 3 5|])
+jconsole&gt; a 15
+0
+jconsole&gt; a 3
+1
+jconsole&gt; a 5
+2
+jconsole&gt; a 30
+0
+jconsole&gt; a 6
+1
+jconsole&gt; a 10
+2
+jconsole&gt; a 1
+3
+jconsole&gt; a 2
+3
+jconsole&gt; a 4
+3</code></pre>
+<p>Its behavior can be summarized by this sequential algorithm:</p>
+<ol style="list-style-type: decimal">
+<li>If divisible by 15, return 0</li>
+<li>If divisible by 3, return 1</li>
+<li>If divisible by 5, return 2</li>
+<li>Otherwise, return 3</li>
+</ol>
+<p>This is exactly what we need to select from the choices described above! Let’s look at how this algorithm is implemented. First, the subexpression <code>15 3 5|]</code>. We will ignore the <code>]</code> for now, which is kind of like an identity function, and frequently used for tacit programming in J in the same vein that <a href="http://learnyouahaskell.com/higher-order-functions"><code>$</code> is used in Haskell</a>. If you’re interested in how <code>]</code> is relevant to the larger expression, you can read about verb evaluation patterns in J <a href="http://www.jsoftware.com/help/learning/09.htm">here</a>. The new expression is now <code>15 3 5|</code>:</p>
+<pre class="j"><code>jconsole&gt; 15 3 5|15
+0 0 0
+jconsole&gt; 15 3 5|15
+0 0 0
+jconsole&gt; 15 3 5|3
+3 0 3
+jconsole&gt; 15 3 5|5
+5 2 0
+jconsole&gt; 15 3 5|30
+0 0 0
+jconsole&gt; 15 3 5|6
+6 0 1
+jconsole&gt; 15 3 5|10
+10 1 0
+jconsole&gt; 15 3 5|1
+1 1 1</code></pre>
+<p><code>|</code> is the modulo operator, as it is in many other languages. However, because J is an array language, the operator affects all elements much like in Matlab or R. From here, we can see that we’re closer to an implementation of the described algorithm:</p>
+<ol style="list-style-type: decimal">
+<li>Pick the index of the first zero from the above modulo application</li>
+<li>Otherwise, return the length of the array</li>
+</ol>
+<p><code>i.</code> is the key to this. It’s synonymous with an infixed <a href="https://hackage.haskell.org/package/base-4.2.0.0/docs/Data-List.html#v%3AelemIndex"><code>elemIndex</code> in Haskell</a> or <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf"><code>indexOf</code> in JavaScript</a>, with the exception of returning the length of the array if not present instead of <code>Nothing</code> or <code>-1</code>.</p>
+<pre class="j"><code>jconsole&gt; 11 12 13 i. 11
+0
+jconsole&gt; 11 12 13 i. 12
+1
+jconsole&gt; 11 12 13 i. 13
+2
+jconsole&gt; 11 12 13 i. 14
+3
+jconsole&gt; 11 12 13 i. 1
+3</code></pre>
+<p>Now we have most of the components needed for a rough understanding of how this function works!</p>
+<pre><code>NB. FizzBuzz
+FB=:('FizzBuzz';'Fizz';'Buzz';&quot;:){::~0 i.~15 3 5|]
+FB&quot;0 &gt;:i.100</code></pre>
+<h2 id="triangle-type">Triangle Type</h2>
+<p>Let’s look at another short screener problem.</p>
+<blockquote>
+<p>Given 3 positive integer lengths to represent the sides of a triangle write a program that will determine the type of triangle: equilateral, isosceles, irregular, or impossible.</p>
+</blockquote>
+<p>We will solve it in fewer characters than the original prompt, though that’s not our main goal.</p>
+<pre class="j"><code>jconsole&gt; trigsort =:('Equilateral';'Isoceles';'Irregular';'Impossible') {::~ ((3&amp;,@(9 5 3 i. +/@;@(=/ ]))) {~ 2&amp;*@(&gt;./)&lt;+/)
+jconsole&gt; trigsort 1 1 1
+Equilateral
+jconsole&gt; trigsort 1 1 2
+Impossible
+jconsole&gt; trigsort 1 2 2
+Isoceles
+jconsole&gt; trigsort 3 4 5
+Irregular</code></pre>
+<p>I’ll give a <em>brief</em> overview of some subcomponents.</p>
+<pre><code>NB. Map of the results
+trigtype=:('Equilateral';'Isoceles';'Irregular';'Impossible') {::~ ]
+
+NB. Given an array of three positive numbers, return how many different values there are, minus one
+numtype =:9 5 3 i. +/@;@(=/])
+
+NB. Given an array of three positive numbers, test for the triangle inequality, returning 1 if it holds and 0 otherwise
+validtrig =: 2&amp;*@(&gt;./) &lt; +/
+
+NB. Put everything together
+trigsort =: trigtype ((3&amp;,@numtype) {~ validtrig)
+</code></pre>
+<p>It could probably be cleaned up even more, but I’m okay with how it is right now.</p>
+<h2 id="why-do-this">Why do this</h2>
+<p>Why use J at all if it appears so unmaintainable? Well, maybe math looks unmaintainable too upon first glance. Or Chinese, or Arabic. J <em>excels</em> at representing high-dimensional computations (<em>ahem machine learning <em>barfs</em></em>) and has a very high density of algorithmic meaning. Doesn’t it make sense that in mathematics, we use the integral symbol instead of <code>A.Integral(B)</code>? IMHO, J and other languages in this family such as K, Q, and APL invent such a notation for computation. For example, here’s naive K-nearest neighbors implemented in J:</p>
+<pre><code>NB. naive k-nearest neighbors in J
+
+dist =: [:%:[:|[:+/(*:@:-)    NB. dyad takes two vectors, returns euclidean distance
+
+data =: 1 2 3,2 2 3,2 3 3,1 2 3,:2 3 4
+query =: 1 2 3
+k =: 3
+
+k {.&quot;1 /:&quot;1 query&amp;dist&quot;1 data</code></pre>
+<p>It does get easier. The operators start coming together as letters do to form words. The works of experienced others start reading like prose. It’s definitely a new experience, and I find it worthwhile.</p>
+
+    </content>
+    <hr />
+		<footer>
+      <small>Site powered by
+      <a href="http://jaspervdj.be/hakyll" target="_blank">Hakyll</a>.
+      <!--
+      and
+      <a href="https://www.nginx.com" target="_blank">nginx</a>.
+      --></small>
+		</footer>
+  </body>
+</html>
