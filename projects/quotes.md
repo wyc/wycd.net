@@ -67,4 +67,13 @@ controlling the logic, you're controlling the decision."
 "If you get people together for a meeting about how important some topic is, then you know that you failed."
     - Richard Cook
 
+"With public key cryptography, there’s a horrible, fundamental challenge of
+finding somebody, anybody, to establish and maintain the infrastructure. For
+example, you could enlist a well-known technology company to do it, but this
+would offend the refined aesthetics of the vaguely Marxist but comfortably
+bourgeoisie hacker community who wants everything to be decentralized and who
+non-ironically believes that Tor is used for things besides drug deals and
+kidnapping plots."
+    - James Mickens
 </pre>
+

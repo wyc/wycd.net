@@ -4,10 +4,17 @@ title: Consulting
 
 <p>
 I'm currently available for new consulting engagements. If you think that I
-could help you grow your business, I'd love to chat. I particularly enjoy
-working with companies large and small that are interested in <i>new product
-development</i>, <i>business technology that drives sales</i>, and
-<i>secure reliable applications</i>.
+could help you grow your business, I'd love to chat. I have taken companies
+with zero technology and grown them into profitable product lines consisting of
+modern web and native mobile applications. I've worked on projects with complex
+security requirements and extensive ties to existing infrastructure.
+
+My most important focus is alignment on what is truly valuable to the business;
+everything else is likely noise. By incorporating this knowledge into every
+facet of my decision making, our outcome is likely to be a cost-effective home
+run. I work best with companies interested in <i>new product development</i>,
+<i>business technology that drives sales</i>, and <i>secure reliable
+applications</i>.
 </p>
 
 <p>
