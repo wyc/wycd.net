@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>wyc - Enterprise Salespeople are a lot like Computer Security Researchers</title>
+		<link rel="stylesheet" href="../css/default.css" />
+	</head>
+	<body>
+    <header>
+      <h1>wyc's domain</h1>
+      <ul>
+        <li><a href="https://github.com/wyc" target="_blank">
+            <img src="../images/github.png" alt="GitHub">
+        </a></li>
+        <li><a href="https://www.linkedin.com/in/changwayne" target="_blank">
+            <img src="../images/linkedin.png" alt="LinkedIn">
+        </a></li>
+        <li><a href="https://twitter.com/wycdd" target="_blank">
+            <img src="../images/twitter.png" alt="Twitter">
+        </a></li>
+      </ul>
+    </header>
+    <nav>
+      <a href="../">Home</a> |
+      <a href="../blog.html">Blog</a> |
+      <a href="../projects.html">Projects</a> |
+      <a href="../consulting.html">Consulting</a>
+    </nav>
+		<hr />
+    <content>
+      <h2>Enterprise Salespeople are a lot like Computer Security Researchers</h2>
+      <div class="info">
+    Posted on February  4, 2017
+    
+</div>
+
+<div class="info">
+    
+    Tags: <a href="../tags/business.html">business</a>, <a href="../tags/security.html">security</a>
+    
+</div>
+
+<p>Who do hackers stereotypically hate most? Probably <a href="http://www.theonion.com/article/businessman-goes-home-for-the-holidays-to-network--30719">business people</a>. They schmooze around with their fake friends, talk about value and synergy, have a poor understanding of technology, and disrespect our craftsmanship. They hobble highly-skilled work as no more than a means to their nefarious profit-driven ends. Yet, I think there’s a strong resemblence between the most businessy and Successful enterprise salesperson and the much-glorified hardcore penetration tester who regularly collects on bug bounties.</p>
+<p>How do many pen testers operate? They first <a href="http://internetcensus2012.bitbucket.org/paper.html">collect as much information</a> as possible. When they’re satisfied with the amount and quality of data, they’ll attempt to conquer one of many <a href="https://groups.google.com/forum/?fromgroups=#!topic/rubyonrails-security/DCNTNp_qjFM">entry points</a> exposed from a system’s exterior and eventually perform <a href="http://seclists.org/oss-sec/2014/q2/469">privilege escalations</a> once they’re inside.</p>
+<p>Here’s a visual representation of what a system intrusion could look like:</p>
+<pre><code>    +-------------+
+    | SHIT WEBAPP | (1) break into this
+    +-------------+
+          |     |
+          |     +-------------------+
+          |                         |  (3) leverage position to
+          | (2) pwn db         /^^^^^^^^^\    pwn whole network
+     +-----------------+     /^ CORPORATE ^\
+     | DATABASE        |    &lt;   CLOUD VPN   &gt;
+     +-----------------+     \vvvvvvvvvvvvv/</code></pre>
+<p>Outbound salespeople do a pretty similar dance. They first <a href="https://blog.hubspot.com/marketing/beginner-inbound-lead-generation-guide-ht">gather intel</a>. When they’re happy with the amount and quality of data, then they’ll try to <a href="http://predictablerevenue.com/blog/how-to-write-a-cold-sales-email">access an entry point</a>. Once they’re in, they try to find the decision maker(s) and perform <a href="http://amzn.to/2iKNoyR">privilege escalation</a>.</p>
+<p>Here’s a visual representation of what an enterprise sale could look like:</p>
+<pre><code>    +-------------+
+    | GATEKEEPER  | (1) get past this
+    +-------------+
+          |     |
+          |     +-------------------+
+          |                         |  (3) cross-sell and get warm leads
+          | (2) make the sale  /^^^^^^^^^^^^^^^\
+     +-----------------+     /^     CORPORATE   ^\
+     | ECONOMIC BUYER  |    &lt;   REFERRAL NETWORK  &gt;
+     +-----------------+     \vvvvvvvvvvvvvvvvvvv/</code></pre>
+<p>While their tools and tactics are different, the general outlines look very similar: failure is the norm. Persistence, savviness, and ingenuity are keys to winning. The big firms have very well-defined processes that can efficiently perforate a staggering amount of organizations at breakneck speeds. Both fields are founded on trust, and the best practicioners seem to be most concerned with other people. There may be things for these fields to learn from each other after all.</p>
+
+    </content>
+    <hr />
+		<footer>
+      <small>
+      Site powered by
+      <a href="http://jaspervdj.be/hakyll" target="_blank">Hakyll</a>.
+
+      What I'm up to 
+      <a href="../now.html">now</a>.
+      <!--
+      and
+      <a href="https://www.nginx.com" target="_blank">nginx</a>.
+      --></small>
+		</footer>
+  </body>
+</html>

@@ -21,7 +21,7 @@ main = hakyll $ do
         route   idRoute
         compile compressCssCompiler
 
-    create ["robots.txt"] $ do
+    create ["robots.txt", "wayne@wycd.net.pub"] $ do
         route   idRoute
         compile copyFileCompiler
 
@@ -89,7 +89,7 @@ main = hakyll $ do
                 >>= relativizeUrls
 
     match "index.html" $ do
-        route idRoute
+        route   idRoute
         compile $ do
             posts <- fmap (take 3) $ regularPosts
             let indexCtx =
