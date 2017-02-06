@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>wyc - Gentoo Offline Package Install</title>
+		<link rel="stylesheet" href="../css/default.css" />
+	</head>
+	<body>
+    <header>
+      <h1>wyc's domain</h1>
+      <ul>
+        <li><a href="https://github.com/wyc" target="_blank">
+            <img src="../images/github.png" alt="GitHub">
+        </a></li>
+        <li><a href="https://www.linkedin.com/in/changwayne" target="_blank">
+            <img src="../images/linkedin.png" alt="LinkedIn">
+        </a></li>
+        <li><a href="https://twitter.com/wycdd" target="_blank">
+            <img src="../images/twitter.png" alt="Twitter">
+        </a></li>
+      </ul>
+    </header>
+    <nav>
+      <a href="../">Home</a> |
+      <a href="../blog.html">Blog</a> |
+      <a href="../projects.html">Projects</a> |
+      <a href="../consulting.html">Consulting</a>
+    </nav>
+		<hr />
+    <content>
+      <h2>Gentoo Offline Package Install</h2>
+      <div class="info">
+    Posted on February  6, 2017
+    
+</div>
+
+<div class="info">
+    
+    Tags: <a href="../tags/gentoo.html">gentoo</a>, <a href="../tags/linux.html">linux</a>, <a href="../tags/devops.html">devops</a>
+    
+</div>
+
+<p>I had a desktop with a Gentoo Linux installation that was way out of date. Normally, updating it would be a simple <code>emerge --sync &amp;&amp; emerge -uDNav @world</code>, but there was an issue: the desktop was physically too far away from the router/switch for any of my ethernet cables. Have no fear, for I have a Linux-compatible <a href="http://amzn.to/2khl6ew">USB WiFi modem</a>!</p>
+<h3 id="loading-the-firmware">Loading the Firmware</h3>
+<p>After some research online using my Internet-enabled laptop, I compiled the necessary kernel modules on the offline machine for anything that was prefixed with <a href="https://wireless.wiki.kernel.org/en/users/drivers/ath9k"><code>ATH9K</code></a>. I rebooted, and alas:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">dmesg</span> <span class="kw">|</span> <span class="fu">grep</span> ath9k_htc
+<span class="ex">usb</span> 5-2: ath9k_htc: Firmware htc_9271.fw requested
+<span class="ex">usbcore</span>: registered new interface driver ath9k_htc
+<span class="ex">usb</span> 5-2: firmware: direct-loading firmware htc_9271.fw
+<span class="ex">usb</span> 5-2: ath9k_htc: Firmware - htc_9271.fw download failed
+<span class="ex">usb</span> 5-2: ath9k_htc: USB layer deinitialized
+$ <span class="fu">find</span> /lib64/firmware -name htc_9271.fw
+<span class="co"># no results</span></code></pre></div>
+<p>Womp. No firmware. I searched for some firmware online, and transfered via USB stick a recent <a href="http://archive.ubuntu.com/ubuntu/pool/main/l/linux-firmware/linux-firmware_1.157.8.tar.gz"><code>linux-firmware_1.157.8.tar.gz</code></a>. I confirmed the <a href="http://archive.ubuntu.com/ubuntu/pool/main/l/linux-firmware/linux-firmware_1.157.8.dsc">signature</a> and untarred into the firmware directory:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">sudo</span> tar -xvzf linux-firmware_1.157.8.tar.gz --strip=1 -C /lib64/firmware/</code></pre></div>
+<p>After a quick reboot, I now have working firmware!</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">dmesg</span> <span class="kw">|</span> <span class="fu">grep</span> ath9
+<span class="ex">usb</span> 5-2: ath9k_htc: Firmware ath9k_htc/htc_9271-1.4.0.fw requested
+<span class="ex">usbcore</span>: registered new interface driver ath9k_htc
+<span class="ex">usb</span> 5-2: ath9k_htc: Transferred FW: ath9k_htc/htc_9271-1.4.0.fw, size: 51008
+<span class="ex">ath9k_htc</span> 5-2:1.0: ath9k_htc: HTC initialized with 33 credits
+<span class="ex">ath9k_htc</span> 5-2:1.0: ath9k_htc: FW Version: 1.4
+<span class="ex">ath9k_htc</span> 5-2:1.0: FW RMW support: On
+<span class="ex">ath9k_htc</span> 5-2:1.0 wlp7s0u2: renamed from wlan0</code></pre></div>
+<h3 id="installing-network-packages">Installing Network Packages</h3>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">nmtui</span>
+<span class="ex">zsh</span>: command not found: nmtui</code></pre></div>
+<p>Unfortunately, the installation didn’t have networking packages such as <code>NetworkManager</code> or <code>wpa_supplicant</code> to connect to WiFi. <code>wpa_supplicant</code> is really all I need, but if I’m planning to go through the hassle of installing all these packages, then I might as well bring in <code>NetworkManager</code> to make my life easier, as it also contains <code>wpa_supplicant</code> as a dependency. I’ll be transferring dependencies over <a href="https://en.wikipedia.org/wiki/Sneakernet">sneakernet</a>.</p>
+<p>On the offline machine, I created the list of things required to install the package I wanted:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">sudo</span> mount /dev/<span class="op">&lt;</span>DEVICE<span class="op">&gt;</span> /mnt/usb
+<span class="co"># -p for pretend, -f for fetchonly</span>
+$ <span class="ex">emerge</span> -pf networkmanager <span class="op">&gt;</span> /mnt/usb/distfiles_list.txt
+$ <span class="fu">sudo</span> umount /mnt/usb</code></pre></div>
+<p>On my Internet-enabled laptop, I downloaded all the necessary files, including the dependencies:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">sudo</span> mount /dev/<span class="op">&lt;</span>DEVICE<span class="op">&gt;</span> /mnt/usb
+$ <span class="fu">mkdir</span> /mnt/usb/distfiles
+$ <span class="fu">cat</span> /mnt/usb/distfiles_list.txt <span class="kw">|</span> <span class="fu">grep</span> <span class="st">'^http'</span> <span class="kw">|</span> <span class="fu">cut</span> -d<span class="st">' '</span> -f1 <span class="kw">|</span> <span class="fu">xargs</span> wget -P /mnt/usb/distfiles/
+<span class="co"># these should be the same count, otherwise figure out what didn't download</span>
+$ <span class="fu">ls</span> /mnt/usb/distfiles <span class="kw">|</span> <span class="fu">wc</span> -l
+$ <span class="fu">cat</span> /mnt/usb/distfiles_list.txt <span class="kw">|</span> <span class="fu">grep</span> <span class="st">'^http'</span> <span class="kw">|</span> <span class="fu">wc</span> -l
+$ <span class="fu">sudo</span> umount /mnt/usb</code></pre></div>
+<p>On the offline machine, I extracted them into <code>/usr/portage/distfiles</code>, where our package manager expects them to be. I then installed the target package:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">sudo</span> mount /dev/<span class="op">&lt;</span>DEVICE<span class="op">&gt;</span> /mnt/usb
+$ <span class="fu">cp</span> /mnt/usb/distfiles/* /usr/portage/distfiles
+$ <span class="fu">sudo</span> umount /mnt/usb
+$ <span class="fu">sudo</span> emerge -av networkmanager</code></pre></div>
+<p>The installation finished without a hitch! I could now use <code>nmtui</code> to configure and connect to the WLAN.</p>
+<h3 id="updating-the-world">Updating the World</h3>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">sudo</span> su -c<span class="st">'emerge --sync &amp;&amp; emerge -uDNav @world'</span></code></pre></div>
+<p>And now my machine’s world is back up to date.</p>
+
+<center><pre>--------</pre></center>
+
+<form class="subscribe" action="https://tinyletter.com/wc" method="post">
+  <h5>
+    I can send you a summary of my best content via
+    <a target="_blank" href="https://tinyletter.com/wc">TinyLetter</a>,
+    max one message per month.
+  </h5>
+  <br />
+  <input type="text" placeholder="Enter Your Email" name="email" id="tlemail" />
+  <input type="hidden" value="1" name="embed" />
+  <input type="submit" value="Subscribe" />
+</form>
+
+    </content>
+    <hr />
+		<footer>
+      <small>
+      Site powered by
+      <a href="http://jaspervdj.be/hakyll" target="_blank">Hakyll</a>.
+
+      What I'm up to 
+      <a href="../now.html">now</a>.
+      <!--
+      and
+      <a href="https://www.nginx.com" target="_blank">nginx</a>.
+      --></small>
+		</footer>
+  </body>
+</html>
