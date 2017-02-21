@@ -58,6 +58,14 @@ p.caption {
   font-style: italic;
 }
 
+center pre {
+  overflow-x: hidden;
+}
+
+pre {
+  overflow-x: scroll;
+}
+
 footer {
   margin: 20px 0;
 }

