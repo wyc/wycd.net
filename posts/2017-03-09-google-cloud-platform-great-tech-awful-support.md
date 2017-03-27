@@ -60,6 +60,6 @@ I think you're likely to have a good support experience with GCP if you have one
 
 - Awesome friend who works at Google
 - [Spend several hundred thousand dollars per month for account managers](https://news.spotify.com/us/2016/02/23/announcing-spotify-infrastructures-googley-future/)
-- No billing or technical disputes ever
+- Few billing or technical disputes
 
 There are some immensely effort-saving features that definitely make my life easier, and I hope I get them soon without this friction.
