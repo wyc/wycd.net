@@ -5,6 +5,8 @@ tags: security
 
 For the impatient, [click here](#original-report) for the original report.
 
+Media coverage can be found at [The Register](https://www.theregister.co.uk/2017/02/21/ibm_data_science_experience_fixes_docker_security/).
+
 This is a disclosure of a privilege escalation vulnerability I found in the IBM Data Science Experience product, which was patched on Feb 15th, 2017. It was a misconfiguration vulnerability with very severe consequences. In short, they left all the [Docker TLS keys](https://docs.docker.com/engine/security/https/) in the container, which is the same as leaving a jail cell's keys inside the jail cell. I worked with [IBM PSIRT](https://www-03.ibm.com/security/secure-engineering/process.html) staff to address this. Thank you to Marcia at [Zeitgeist Law](https://www.zeitgeist.law/) for helping me think through disclosure issues.
 
 [IBM Data Science Experience](http://datascience.ibm.com/) is an all-in-one data analytics product built on top of [IBM's $300MM investment](https://www-03.ibm.com/press/us/en/pressrelease/49866.wss) into Apache Spark. It touts a seamlessly integrated package of big data analytics tools including Spark, Jupyter notebooks, RStudio, Shiny, and more.
@@ -52,7 +54,7 @@ This kind of oversight simply isn't acceptable for such a high-profile and enter
 
 #### Shameless plug
 
-I think breaking things is fun, but I usually prefer building things. Feel free to reach out if you want to [work together](/consulting.html).
+I think breaking things is fun, but I usually prefer building things. Feel free to reach out if you want to [work together](https://www.wyc.io/).
 
 #### <a name="original-report"></a>My original report
 

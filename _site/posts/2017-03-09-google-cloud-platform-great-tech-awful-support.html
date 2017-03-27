@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>wyc - My Google Cloud Platform Experience: Great Tech, Awful Support</title>
+		<link rel="stylesheet" href="../css/default.css" />
+	</head>
+	<body>
+    <header>
+      <h1>wyc's domain</h1>
+      <ul>
+        <li><a href="https://github.com/wyc" target="_blank">
+            <img src="../images/github.png" alt="GitHub">
+        </a></li>
+        <li><a href="https://www.linkedin.com/in/changwayne" target="_blank">
+            <img src="../images/linkedin.png" alt="LinkedIn">
+        </a></li>
+        <li><a href="https://twitter.com/wycdd" target="_blank">
+            <img src="../images/twitter.png" alt="Twitter">
+        </a></li>
+      </ul>
+    </header>
+    <nav>
+      <a href="../">Home</a> |
+      <a href="../blog.html">Blog</a> |
+      <a href="../projects.html">Projects</a> |
+      <a target="_blank" href="https://www.wyc.io/">Consulting</a>
+    </nav>
+		<hr />
+    <content>
+      <h2>My Google Cloud Platform Experience: Great Tech, Awful Support</h2>
+      <div class="info">
+    Posted on March  9, 2017
+    
+</div>
+
+<div class="info">
+    
+    Tags: <a href="../tags/business.html">business</a>, <a href="../tags/software.html">software</a>, <a href="../tags/cloud.html">cloud</a>
+    
+</div>
+
+<p>Over 1.5 months, I went through 34 back-and-forth messages, eight different Google support representatives, one unsolicited phone call on a Sunday, and a subsequent 24-hour self-destructing arbitration offer. This was finally resolved only after a friend who happened to be an <em>employee of Google</em> kindly offered to escalate my ticket. This was $100 in dispute, while they simultaneously offer $300 of <em>free trial credit</em> <a href="https://cloud.google.com/free/">to anyone</a>.</p>
+<p>My position is that Google Cloud Platform has amazing technology, and the product’s so good that I’m willing to wade through the customer support pain to keep using it. Furthermore, I’m still likely to recommend it to clients. However, I’d be a far happier user if the support was anywhere near as good. I think Ben Thompson has it right in his article <a href="https://stratechery.com/2016/how-google-cloud-platform-is-challenging-aws/">How Google is Challenging AWS</a>:</p>
+<blockquote>
+<p>To be sure, Google’s success is not assured: the company still has to grapple with a new business model — sales versus ads — and build up the sort of organization that is necessary for not just sales but also enterprise support. Both are areas where Amazon has a head start, along with a vastly larger partner ecosystem and a larger feature set generally.</p>
+</blockquote>
+<h2 id="timeline">Timeline</h2>
+<ul>
+<li><p>Early November: Saw a demonstration of Google Cloud Platform. I really liked Datastore, and thought it could save me a lot of time. It even has a well-written Go SDK! Checked out the rest of the SDK, including the <code>gcloud</code> command-line utility, and I decided that this was generally well-designed and something I’d enjoy using. I even <a href="https://github.com/wyc/wyc-overlay/blob/master/app-admin/google-cloud-sdk/google-cloud-sdk-138.0.0.ebuild">packaged it for Gentoo</a> recently; this was the Real Deal. The web UI seemed consistent and excellent, especially compared to AWS, which feels a bit more inconsistent and clobbered together. The pricing was competitive. Okay, let’s go! Sweep me away, Google Cloud Platform.</p></li>
+<li><p>November 17th: Implemented Kubernetes on GCE. Happy with my cluster and huge chunks of spent time that I’ll never get back. Selected all my instances in the web UI, right click -&gt; shutdown.</p></li>
+<li><p>December 3rd: Billed for $95.22, $93.60 of which is 949.45 hours of “Compute Engine Standard Intel N1 2 VCPU running in Americas”. Hmm, that’s way off–should have been somewhere under 20 hours for my usage. I went to console and deleted offending project. I opened a ticket to investigate the costs and get to the bottom of this billing error.</p></li>
+<li><p>December 3rd: I was asked for more information about the billed instances, project, etc. I responded.</p></li>
+<li><p>December 4th: Rep1 gives me instructions to disable the project in question. When I pointed out that the project was already deleted, I was told their Specialized team would be consulted.</p></li>
+<li><p>December 7th: Rep2 tells me that Rep1 is out of office and I’ll receive an update soon.</p></li>
+<li><p>December 8th: Rep1 asks for more some more deatils about my refund request, and I answer. Again, the Specialized team would be consulted.</p></li>
+<li><p>December 10th: Rep1 is still investigating. I appreciate the update.</p></li>
+<li><p>December 11th: Rep1 calls me on a Sunday and attempts to explain the GCE billing page to me, and isn’t sure what to do when I bring up my issue. Rep1 sends a follow-up email with instructions on how to stop instances and “[thus], I’m on the process of requesting only 50% of your disputed charge as a one time courtesy refund. Please let me know within 24 hours if you are amenable with this proposal.” I do not accept the exploding offer.</p></li>
+<li><p>December 14th: Rep1 sends me general information about Compute Engine pricing, and I reiterate my concerns in paragraph form.</p></li>
+<li><p>December 16th: Rep1 informs me that it’s now understood to be a UI issue.</p></li>
+<li><p>December 17th: Rep1 informs me that the case is still under review.</p></li>
+<li><p>December 20th: Rep3 tells me Rep1 is out of office and I’ll receive an update soon.</p></li>
+<li><p>December 22nd: Rep4 tells me Rep1 is out of office and I’ll receive an update soon. Rep4 transfers me to the technical team.</p></li>
+<li><p>December 24th: Rep5 tells me to rest assured, Rep1 is out of office and I’ll receive an update soon. Rep6 tells me Rep1 is out of office and I’ll receive an update soon.</p></li>
+<li><p>December 27th: Rep7 tells me Rep1 is out of office and I’ll receive and update soon. I am now in a Kafkaesque cloud support nightmare.</p></li>
+<li><p>December 28th: Rep8 contacts me with general product descriptions. Rep8 has one note about the disputed project: “we are unable to search this kind of project in our database”, to which I respond with my original concerns.</p></li>
+<li><p>December 29th: Rep8 decides to transfer me to the billing team. I briefly rant in Internet chat rooms–typically a very productive pastime and good investment of my time. My friend who works at Google messages me about how awful that sounds and insists we escalate the case. I forward my email and case number expecting nothing, but Rep9 reaches out to me in just a few hours.</p></li>
+<li><p>December 30th: Rep9 decides to issue a <em>full refund</em> of …$86? Wrong amount, but I’ll take it. I thank him.</p></li>
+<li><p>January 2nd: Rep9 tells me that my refund is in progress.</p></li>
+<li><p>January 4th: Rep10 takes over the case?</p></li>
+<li><p>January 13th: Rep10 closes the case. System auto-sends Customer Feedback Survey email on behalf of Rep10.</p></li>
+</ul>
+<p>I think you’re likely to have a good support experience with GCP if you have one of:</p>
+<ul>
+<li>Awesome friend who works at Google</li>
+<li><a href="https://news.spotify.com/us/2016/02/23/announcing-spotify-infrastructures-googley-future/">Spend several hundred thousand dollars per month for account managers</a></li>
+<li>No billing or technical disputes ever</li>
+</ul>
+<p>There are some immensely effort-saving features that definitely make my life easier, and I hope I get them soon without this friction.</p>
+
+    </content>
+    <hr />
+		<footer>
+      <small>
+      Site powered by
+      <a href="http://jaspervdj.be/hakyll" target="_blank">Hakyll</a>.
+
+      What I'm up to 
+      <a href="../now.html">now</a>.
+      <!--
+      and
+      <a href="https://www.nginx.com" target="_blank">nginx</a>.
+      --></small>
+		</footer>
+  </body>
+</html>

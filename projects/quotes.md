@@ -75,5 +75,8 @@ bourgeoisie hacker community who wants everything to be decentralized and who
 non-ironically believes that Tor is used for things besides drug deals and
 kidnapping plots."
     - James Mickens
+
+"Why program by hand in five days what you can spend twenty-five years of your life automating?"
+- Terrence Parr
 </pre>
 

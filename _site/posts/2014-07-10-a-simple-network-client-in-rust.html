@@ -26,7 +26,7 @@
       <a href="../">Home</a> |
       <a href="../blog.html">Blog</a> |
       <a href="../projects.html">Projects</a> |
-      <a href="../consulting.html">Consulting</a>
+      <a target="_blank" href="https://www.wyc.io/">Consulting</a>
     </nav>
 		<hr />
     <content>
@@ -129,21 +129,6 @@ fn read_to_end(&amp;mut self) -&gt; IoResult&lt;Vec&lt;u8&gt;&gt; {
 <h4 id="special-thanks-to">Special thanks to:</h4>
 <p><a href="http://www.reddit.com/r/rust/comments/2ajpvy/a_simple_network_client_in_rust/civwlmv"><strong>dbaupp</strong></a> for pointing out that <code>IoError</code> can be directly printed and mentioning the <a href="http://doc.rust-lang.org/master/std/result/#the-try!-macro"><code>try!()</code></a> macro. I’ve decided to keep pattern matching to reveal details about handling <code>IoResult</code>.</p>
 <p><a href="https://news.ycombinator.com/reply?id=8048088"><strong>zokier</strong></a> for pointing out an incorrect assumption. I assumed that <code>read_to_end()</code> would only read <code>DEFAULT_BUF_SIZE</code> at most, but this was wrong.</p>
-
-<br />
-<center><pre>--------</pre></center>
-
-<form class="subscribe" action="https://tinyletter.com/wc" method="post">
-  <h5>
-    If you want periodic updates on my content, I can send you them via
-    <a target="_blank" href="https://tinyletter.com/wc">TinyLetter</a>
-    every few months.
-  </h5>
-  <br />
-  <input type="text" placeholder="Enter Your Email" name="email" id="tlemail" />
-  <input type="hidden" value="1" name="embed" />
-  <input type="submit" value="Okay" />
-</form>
 
     </content>
     <hr />

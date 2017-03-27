@@ -26,7 +26,7 @@
       <a href="../">Home</a> |
       <a href="../blog.html">Blog</a> |
       <a href="../projects.html">Projects</a> |
-      <a href="../consulting.html">Consulting</a>
+      <a target="_blank" href="https://www.wyc.io/">Consulting</a>
     </nav>
 		<hr />
     <content>
@@ -43,6 +43,7 @@
 </div>
 
 <p>For the impatient, <a href="#original-report">click here</a> for the original report.</p>
+<p>Media coverage can be found at <a href="https://www.theregister.co.uk/2017/02/21/ibm_data_science_experience_fixes_docker_security/">The Register</a>.</p>
 <p>This is a disclosure of a privilege escalation vulnerability I found in the IBM Data Science Experience product, which was patched on Feb 15th, 2017. It was a misconfiguration vulnerability with very severe consequences. In short, they left all the <a href="https://docs.docker.com/engine/security/https/">Docker TLS keys</a> in the container, which is the same as leaving a jail cell’s keys inside the jail cell. I worked with <a href="https://www-03.ibm.com/security/secure-engineering/process.html">IBM PSIRT</a> staff to address this. Thank you to Marcia at <a href="https://www.zeitgeist.law/">Zeitgeist Law</a> for helping me think through disclosure issues.</p>
 <p><a href="http://datascience.ibm.com/">IBM Data Science Experience</a> is an all-in-one data analytics product built on top of <a href="https://www-03.ibm.com/press/us/en/pressrelease/49866.wss">IBM’s $300MM investment</a> into Apache Spark. It touts a seamlessly integrated package of big data analytics tools including Spark, Jupyter notebooks, RStudio, Shiny, and more.</p>
 <p>What was at stake:</p>
@@ -80,7 +81,7 @@
 <li>A bug bounty: (admittedly, this is partially in self-interest, but) how much is preventing unauthorized access to all of your customers’ data worth? Wouldn’t a company prefer to shell out a few grand than risk a PR disaster that could cost millions of dollars in lost customers?</li>
 </ul>
 <h4 id="shameless-plug">Shameless plug</h4>
-<p>I think breaking things is fun, but I usually prefer building things. Feel free to reach out if you want to <a href="../consulting.html">work together</a>.</p>
+<p>I think breaking things is fun, but I usually prefer building things. Feel free to reach out if you want to <a href="https://www.wyc.io/">work together</a>.</p>
 <h4 id="my-original-report"><a name="original-report"></a>My original report</h4>
 <p>(some personal information redacted)</p>
 <pre><code>##############################################################################
@@ -262,21 +263,6 @@ Links:
   1. https://en.wikipedia.org/wiki/Privilege_escalation
   2. https://en.wikipedia.org/wiki/Responsible_disclosure
   3. https://en.wikipedia.org/wiki/Bug_bounty_program</code></pre>
-
-<br />
-<center><pre>--------</pre></center>
-
-<form class="subscribe" action="https://tinyletter.com/wc" method="post">
-  <h5>
-    If you want periodic updates on my content, I can send you them via
-    <a target="_blank" href="https://tinyletter.com/wc">TinyLetter</a>
-    every few months.
-  </h5>
-  <br />
-  <input type="text" placeholder="Enter Your Email" name="email" id="tlemail" />
-  <input type="hidden" value="1" name="embed" />
-  <input type="submit" value="Okay" />
-</form>
 
     </content>
     <hr />
