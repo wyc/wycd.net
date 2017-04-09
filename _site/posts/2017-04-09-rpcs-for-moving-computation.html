@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>wyc - RPCs for Moving Computation</title>
+		<link rel="stylesheet" href="../css/default.css" />
+	</head>
+	<body>
+    <header>
+      <h1>wyc's domain</h1>
+      <ul>
+        <li><a href="https://github.com/wyc" target="_blank">
+            <img src="../images/github.png" alt="GitHub">
+        </a></li>
+        <li><a href="https://www.linkedin.com/in/changwayne" target="_blank">
+            <img src="../images/linkedin.png" alt="LinkedIn">
+        </a></li>
+        <li><a href="https://twitter.com/wycdd" target="_blank">
+            <img src="../images/twitter.png" alt="Twitter">
+        </a></li>
+      </ul>
+    </header>
+    <nav>
+      <a href="../">Home</a> |
+      <a href="../blog.html">Blog</a> |
+      <a href="../projects.html">Projects</a> |
+      <a target="_blank" href="https://www.wyc.io/">Consulting</a>
+    </nav>
+		<hr />
+    <content>
+      <h2>RPCs for Moving Computation</h2>
+      <div class="info">
+    Posted on April  9, 2017
+    
+</div>
+
+<div class="info">
+    
+    Tags: <a href="../tags/software.html">software</a>, <a href="../tags/data.html">data</a>
+    
+</div>
+
+<p>One of the tenants of <a href="https://hadoop.apache.org/docs/r3.0.0-alpha2/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html">HDFS</a> is that “Moving Computation is Cheaper than Moving Data”. Basically, 20 KBs of code that perform useful computations are a lot easier to move to your 20 TB datasets than the other way around. It’s a methodology popular in many distributed data analytics platforms including <a href="https://spark.apache.org/">Apache Spark</a>, <a href="https://github.com/joyent/manta">Joyent’s Manta</a>, and <a href="https://hadoop.apache.org">Apache Hadoop</a>, not to mention the countless custom systems that apply the same approach.</p>
+<p>The implementations are still rather ad-hoc, but they tend to provide a set of primitives such as <code>filter</code>, <code>map</code>, <code>reduce</code>, <code>partition</code>, etc. I predict that this will be formalized in something like an <a href="https://en.wikipedia.org/wiki/Remote_procedure_call">RPC framework</a> that will support functional programming as a first-class feature, so that the system as a whole could be self-modifying in providing new endpoints constructed purely via structured RPC calls. This would be not unlike stored database procedures, and it would perhaps have stricter typing to deal with the amalgamation of vastly different data sets.</p>
+<p>Such powerful configuration could be ripe for abuse, so permissions in this distributed system could reflect the protected OS and userspace memory delineations that current operating systems enforce–core privileged functionality can be separated from user-defined functions. This would definitely be a move forward towards computation-as-a-service, and it could be accelerated with a decent standard.</p>
+
+    </content>
+    <hr />
+		<footer>
+      <small>
+      Site powered by
+      <a href="http://jaspervdj.be/hakyll" target="_blank">Hakyll</a>.
+
+      What I'm up to 
+      <a href="../now.html">now</a>.
+      <!--
+      and
+      <a href="https://www.nginx.com" target="_blank">nginx</a>.
+      --></small>
+		</footer>
+  </body>
+</html>
