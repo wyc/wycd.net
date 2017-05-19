@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>wyc - Fixing FreeBSD Networking on Digital Ocean</title>
+		<link rel="stylesheet" href="../css/default.css" />
+		<link rel="stylesheet" href="../css/syntax.css" />
+	</head>
+	<body>
+    <header>
+      <h1>wyc's domain</h1>
+      <ul>
+        <li><a href="https://github.com/wyc" target="_blank">
+            <img src="../images/github.png" alt="GitHub">
+        </a></li>
+        <li><a href="https://www.linkedin.com/in/changwayne" target="_blank">
+            <img src="../images/linkedin.png" alt="LinkedIn">
+        </a></li>
+        <li><a href="https://twitter.com/wycdd" target="_blank">
+            <img src="../images/twitter.png" alt="Twitter">
+        </a></li>
+      </ul>
+    </header>
+    <nav>
+      <a href="../">Home</a> |
+      <a href="../blog.html">Blog</a> |
+      <a href="../projects.html">Projects</a> |
+      <a target="_blank" href="https://www.wyc.io/">Consulting</a>
+    </nav>
+		<hr />
+    <content>
+      <h2>Fixing FreeBSD Networking on Digital Ocean</h2>
+      <div class="info">
+    Posted on May 19, 2017
+    
+</div>
+
+<div class="info">
+    
+    Tags: <a href="../tags/freebsd.html">freebsd</a>, <a href="../tags/bsd.html">bsd</a>, <a href="../tags/cloud.html">cloud</a>
+    
+</div>
+
+<p>I decided it was time to update my FreeBSD Digital Ocean droplet from the end-of-life version 10.1 (shame on me) to the modern <a href="https://www.freebsd.org/releases/10.3R/announce.html">version 10.3 (good until April 2018)</a>, and maybe even <a href="https://www.freebsd.org/releases/11.0R/schedule.html">version 11 (good until 2021)</a>. There were no sensitive files on the VM, so I had put it off. Additionally, cloud providers tend to have shoddy support for BSDs, so breakages after messing with the kernel or init system are rampant, and I had been skirting that risk.</p>
+<p>The last straw for me was a broken <code>pkg</code>:</p>
+<pre><code>$ pkg update
+/usr/local/lib/libpkg.so.3: Undefined symbol &quot;openat&quot;</code></pre>
+<p>Uh oh. Some Googling led to an <a href="https://github.com/freebsd/pkg/issues/1526">answer</a>. Essentially, around <code>pkg</code> version 1.9, there were some library version requirements that my outdated installation didn’t have. Let’s start with upgrading to FreeBSD 10.3.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># freebsd-update fetch install</span>
+<span class="co"># freebsd-update -r 10.3-RELEASE upgrade</span>
+<span class="co"># freebsd-update install</span></code></pre></div>
+<p>I rebooted, and of course, it happened: no <code>ssh</code> access after 30 seconds, 1 minute, 2 minutes…I logged into my Digital Ocean account and saw green status lights for the instance, but something was definitely wrong.</p>
+<h3 id="investigation">Investigation</h3>
+<p>Fortunately, Digital Ocean provides console access (albeit slow, buggy, and crashes my browser every time I run <code>ping</code>). <code>ifconfig</code> revealed that the interfaces <code>vtnet0</code> (public) and <code>vtnet1</code> (private) haven’t been configured with IP addresses. Combing through files in <code>/etc/rc.*</code>, I found a file called <code>/etc/rc.digitalocean.d/${DROPLET_ID}.conf</code> containing static network settings for this droplet (<code>${DROPLET_ID}</code> was something like <code>1234567</code>).</p>
+<p>It seemed that FreeBSD wasn’t picking up the Digital Ocean network settings config file. The quick and dirty way would have been to messily append the contents of this file to <code>/etc/rc.conf</code>, but I wanted a nicer way. Reading the script in <code>/etc/rc.d/digitalocean</code> told me that <code>/etc/rc.digitalocean.d/${DROPLET_ID}.conf</code> was supposed to have a symlink at <code>/etc/rc.digitalocean.d/droplet.conf</code>. It was broken and pointed to <code>/etc/rc.digitalocean.d/.conf</code>, which could happen when the <code>curl</code> command in <code>/etc/rc.d/digitalocean</code> fails:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># /etc/rc.d/digitalocean</span>
+
+<span class="va">DROPLET_ID=$(</span><span class="ex">/usr/local/bin/curl</span> --retry 5 --retry-delay 2 \
+             --connect-timeout 2 -s http://169.254.169.254/metadata/v1/id<span class="va">)</span>
+<span class="co"># ...</span>
+<span class="ex">/bin/ln</span> -s -f /etc/rc.digitalocean.d/<span class="va">$DROPLET_ID</span>.conf \
+              /etc/rc.digitalocean.d/droplet.conf</code></pre></div>
+<p>Using <code>grep</code> to fish for files containing <code>droplet.conf</code>, I discovered that it was hacked into the init system via <code>load_rc_config()</code> in <code>/etc/rc.subr</code>:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># /etc/rc.subr</span>
+
+<span class="kw">if</span><span class="bu"> [</span> <span class="ot">-L</span> /etc/rc.digitalocean.d/droplet.conf <span class="ot">-a</span> <span class="ot">-f</span> /etc/rc.digitalocean.d/droplet.conf<span class="bu"> ]</span>
+<span class="kw">then</span>
+        <span class="bu">.</span> <span class="ex">/etc/rc.digitalocean.d/droplet.conf</span>
+<span class="kw">fi</span></code></pre></div>
+<h3 id="the-fix">The Fix</h3>
+<p>I could fix that symlink and restart the services:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># set DROPLET_ID=$(curl -s http://169.254.169.254/metadata/v1/id)</span>
+<span class="co"># ln -s -f /etc/rc.digitalocean.d/${DROPLET_ID}.conf /etc/rc.digitalocean.d/droplet.conf</span>
+<span class="co"># /etc/rc.d/netif restart</span>
+<span class="co"># /etc/rc.d/routing restart</span></code></pre></div>
+<p>Networking was working again, and I could then <code>ssh</code> into my server and run the following to finish the upgrade:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># freebsd-update install</span></code></pre></div>
+<p>At this point, I decided that I didn’t want to deal with this mess again until at least 2021, so I decided to go for 11.0-RELEASE:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># freebsd-update -r 11.0-RELEASE update</span>
+<span class="co"># freebsd-update install</span>
+<span class="co"># reboot</span></code></pre></div>
+<p>No network outages!</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># freebsd-update install</span>
+<span class="co"># pkg-static install -f pkg</span>
+<span class="co"># pkg update</span>
+<span class="co"># pkg upgrade</span>
+<span class="co"># portsnap fetch update</span>
+<span class="co"># portmaster -Da</span>
+<span class="co"># uname -a</span>
+<span class="ex">FreeBSD</span> hostname 11.0-RELEASE-p9 FreeBSD 11.0-RELEASE-p9
+<span class="co"># pkg -v</span>
+<span class="ex">1.10.1</span></code></pre></div>
+<p>The problem was solved correctly, and my <code>/etc/rc.conf</code> remains free of generated cruft.</p>
+<p>The Digital Ocean team can make our lives easier by having their init scripts do more thorough system checking, e.g., catching broken symlinks and bad network addresses. I’m hopeful that collaboration of the FreeBSD team and cloud providers will one day result in automatic fixing of these situations, or at least a correct status indicator.</p>
+
+    </content>
+    <hr />
+		<footer>
+      <small>
+      Site powered by
+      <a href="http://jaspervdj.be/hakyll" target="_blank">Hakyll</a>.
+
+      What I'm up to 
+      <a href="../now.html">now</a>.
+      <!--
+      and
+      <a href="https://www.nginx.com" target="_blank">nginx</a>.
+      --></small>
+		</footer>
+  </body>
+</html>
