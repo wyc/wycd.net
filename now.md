@@ -6,7 +6,7 @@ This is my [now](https://sivers.org/nowff) page. I expect that it will go out of
 
 Currently, I am:
 
-- looking for more [clients with interesting problems](/consulting.html)
+- looking for more [clients with interesting problems](https://www.wyc.io)
 - focused on writing more [blog posts](/blog.html)
 - writing more things in haskell
 
