@@ -1,6 +1,7 @@
 ---
 title: "Gentoo Full Disk Encryption: LVM on LUKS"
 tags: gentoo, linux, security
+description: Setting up a Gentoo installation that has full disk encryption, including the boot partition.
 ---
 Boot up a Gentoo Install CD/DVD/USB.
 

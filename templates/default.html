@@ -4,9 +4,22 @@
 		<meta charset="utf-8">
 		<meta http-equiv="x-ua-compatible" content="ie=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>wyc - $title$</title>
+		<title>$if(title)$$title$ | $endif$wycd.net</title>
 		<link rel="stylesheet" href="/css/default.css" />
 		<link rel="stylesheet" href="/css/syntax.css" />
+
+    <!-- SEO and Sharing -->
+    <meta name="description" content="$if(description)$$description$$endif$"/>
+    <meta property="og:title" content="$if(title)$$title$$endif$"/>
+    <meta property="og:description" content="$if(description)$$description$$endif$"/>
+    <meta property="og:image" content="$if(imageUrl)$https://www.wyc.io$imageUrl$$endif$"/>
+    <meta property="og:url" content="$if(url)$https://www.wyc.io$url$$endif$"/>
+    <meta property="og:site_name" content="wycd.net"/>
+    <meta name="twitter:title" content="$if(title)$$title$$endif$"/>
+    <meta name="twitter:description" content="$if(description)$$description$$endif$"/>
+    <meta name="twitter:image" content="$if(imageUrl)$https://www.wyc.io$imageUrl$$endif$"/>
+    <meta name="twitter:card" content="summary_large_image"/>
+
 	</head>
 	<body>
     <header>

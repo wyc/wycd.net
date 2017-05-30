@@ -1,6 +1,7 @@
 ---
 title: pptpclient's Use of Fault Tree Analysis
 tags: software, documentation, engineering
+description: An example of great documentation that helps users troubleshoot more effectively.
 ---
 
 I was setting up a [pptp tunnel](https://en.wikipedia.org/wiki/Point-to-Point_Tunneling_Protocol) today, so as a result I was also glued to [pptpclient's documentation](http://pptpclient.sourceforge.net/). I was really impressed by the quality of writing and comprehensiveness--there is even a Gentoo howto.

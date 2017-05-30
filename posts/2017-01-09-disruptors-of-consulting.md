@@ -1,6 +1,7 @@
 ---
 title: Disruptors of Consulting
 tags: business, consulting, disruption
+description: "Professional services firms are not immune to disruption, software services included!"
 ---
 [Clayton Christensen and others write](https://hbr.org/2013/10/consulting-on-the-cusp-of-disruption):
 

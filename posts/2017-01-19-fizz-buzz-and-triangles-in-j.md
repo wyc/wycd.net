@@ -1,6 +1,7 @@
 ---
 title: FizzBuzz in J, Explained
 tags: jlang, software, programming
+description: Two common programming challenges in a tacit programming style.
 ---
 
 Jeff Atwood famously wrote about [FizzBuzz](https://blog.codinghorror.com/why-cant-programmers-program/) and how so many self-proclaimed programmers struggle with it. Let's solve two such interview screener questions in [J](http://jsoftware.com), the open-source [APL](https://en.wikipedia.org/wiki/APL_(programming_language)) descendant! I'll try my best to describe my train of thought, and how I piece together the solution step-by-step, as reactions to J code samples range from "WTF?!?!?!" to "it looks like your cat chewed on your 56k line". If you're not familiar with J, it's best to also be looking at the [J vocab page](http://www.jsoftware.com/help/dictionary/vocabul.htm) while reading this. If you want to start learning from scratch, [this tutorial](http://www.jsoftware.com/help/learning/01.htm) may be your best bet. On that note, here's my solution to FizzBuzz:

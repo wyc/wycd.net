@@ -1,6 +1,7 @@
 ---
 title: Logging Function Names in Go
 tags: golang, programming
+description: How do you log a message along with its location in the Go source code?
 ---
 [TLDR](http://www.reddit.com/r/golang/comments/2af8ri/logging_function_names_in_go/ciwzn90): `runtime.Caller()`, `runtime.FuncForPC()`
 

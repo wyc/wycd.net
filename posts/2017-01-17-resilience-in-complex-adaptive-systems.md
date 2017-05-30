@@ -1,6 +1,7 @@
 ---
 title: Resilience in Complex Adaptive Systems by Richard Cook
 tags: software, engineering, security
+description: "Richard Cook's talk on system risk and how to think about it."
 ---
 
 I highly recommend [Richard Cook](https://www.linkedin.com/in/richardcookmd)'s presentation on [how to model system risk](https://www.youtube.com/watch?v=PGLYEDpNu60). It was wonderfully presented and put forward a very intuitive model of safety, reliability, and cost involved in running a big complex system. He drew heavily upon the work of [Jens Rasmussen](https://en.wikipedia.org/wiki/Jens_Rasmussen_(human_factors_expert)), who thought extensively about risk management for systems with lots of moving parts and people:

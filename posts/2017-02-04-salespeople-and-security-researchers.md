@@ -1,6 +1,7 @@
 ---
 title: Enterprise Salespeople are a lot like Computer Security Researchers
 tags: business, security
+description: Similarities between two fields rarely mentioned together.
 ---
 
 Who do hackers stereotypically hate most? Probably [business people](http://www.theonion.com/article/businessman-goes-home-for-the-holidays-to-network--30719). They schmooze around with their fake friends, talk about value and synergy, have a poor understanding of technology, and disrespect our craftsmanship. They hobble highly-skilled work as no more than a means to their nefarious profit-driven ends. Yet, I think there's a strong resemblence between the most businessy and Successful enterprise salesperson and the much-glorified hardcore penetration tester who regularly collects on bug bounties.

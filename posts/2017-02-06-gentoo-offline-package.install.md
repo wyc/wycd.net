@@ -1,6 +1,7 @@
 ---
 title: Gentoo Offline Package Install
 tags: gentoo, linux, devops
+description: How do you get an old Gentoo installation up to date when there's no WiFi?
 ---
 
 I had a desktop with a Gentoo Linux installation that was way out of date. Normally, updating it would be a simple `emerge --sync && emerge -uDNav @world`, but there was an issue: the desktop was physically too far away from the router/switch for any of my ethernet cables. Have no fear, for I have a Linux-compatible [USB WiFi modem](http://amzn.to/2khl6ew)!

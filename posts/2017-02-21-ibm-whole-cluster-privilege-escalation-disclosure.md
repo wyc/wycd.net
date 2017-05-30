@@ -1,6 +1,7 @@
 ---
 title: "IBM Data Science Experience: Whole-Cluster Privilege Escalation Disclosure"
 tags: security
+description: A critical privilege escalation vulnerability found in the IBM Data Science Experience product.
 ---
 
 For the impatient, [click here](#original-report) for the original report.

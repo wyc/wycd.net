@@ -1,6 +1,7 @@
 ---
 title: Working With Machines
 tags: business, software
+description: Time ownership, and how it impacts our relationship with machines.
 ---
 
 [R. David Dixon Jr. writes](https://hackernoon.com/a-history-and-future-of-the-rise-of-the-robots-cce0fe222a71):

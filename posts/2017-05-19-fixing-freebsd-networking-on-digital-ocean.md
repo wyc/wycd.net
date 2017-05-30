@@ -1,6 +1,7 @@
 ---
 title: Fixing FreeBSD Networking on Digital Ocean
 tags: freebsd, bsd, cloud
+description: Bringing an old FreeBSD installation up to date and fixing the network-breaking changes.
 ---
 
 I decided it was time to update my FreeBSD Digital Ocean droplet from the

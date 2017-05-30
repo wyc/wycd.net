@@ -1,6 +1,7 @@
 ---
 title: "My Google Cloud Platform Experience: Great Tech, Awful Support"
 tags: business, software, cloud
+description: A memorable experience with Google Cloud Platform's customer support team.
 ---
 
 Over 1.5 months, I went through 34 back-and-forth messages, eight different Google support representatives, one unsolicited phone call on a Sunday, and a subsequent 24-hour self-destructing arbitration offer. This was finally resolved only after a friend who happened to be an _employee of Google_ kindly offered to escalate my ticket. This was $100 in dispute, while they simultaneously offer $300 of _free trial credit_ [to anyone](https://cloud.google.com/free/).

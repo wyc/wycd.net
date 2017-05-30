@@ -1,6 +1,7 @@
 ---
 title: Adding Basic Auth to Django
 tags: python, django
+description: How to add Basic Auth to a Django app.
 ---
 
 I was writing a Django application for a project and needed to protect it from

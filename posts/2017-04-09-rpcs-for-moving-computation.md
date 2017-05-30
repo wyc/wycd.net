@@ -1,6 +1,7 @@
 ---
 title: RPCs for Moving Computation
 tags: software, data
+description: "Code moves to the cloud, cheaply!"
 ---
 
 One of the tenants of

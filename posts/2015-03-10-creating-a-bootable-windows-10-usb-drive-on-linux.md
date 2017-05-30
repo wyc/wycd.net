@@ -1,6 +1,7 @@
 ---
 title: Creating a Bootable Windows 10 USB Drive on Linux
 tags: windows, linux
+description: Follow these instructions to create a Windows 10 USB installer from an ISO on GNU/Linux.
 ---
 
 I ran into this problem recently, and it took me a while to solve it because I couldn't find very good material online. I hope this post helps some people reduce their frustrations.

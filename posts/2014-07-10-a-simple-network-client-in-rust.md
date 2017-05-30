@@ -1,6 +1,7 @@
 ---
 title: A Simple Network Client in Rust
 tags: rust, programming
+description: Rust source code for a simple network client that does I/O for the weather.
 ---
 Below is the source code for a network client in Rust 0.12.0. Inspired by Graham King's [blog post](http://www.darkcoding.net/software/rust-what-i-learnt-so-far/#connect_to_a_socket), this program retrieves the weather conditions for a region specified by an ID code. The remainder of this article will explain portions of the code in detail.
 
