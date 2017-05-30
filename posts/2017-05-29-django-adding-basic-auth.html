@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>wyc - Adding Basic Auth to Django</title>
+		<link rel="stylesheet" href="../css/default.css" />
+		<link rel="stylesheet" href="../css/syntax.css" />
+	</head>
+	<body>
+    <header>
+      <h1>wyc's domain</h1>
+      <ul>
+        <li><a href="https://github.com/wyc" target="_blank">
+            <img src="../images/github.png" alt="GitHub">
+        </a></li>
+        <li><a href="https://www.linkedin.com/in/changwayne" target="_blank">
+            <img src="../images/linkedin.png" alt="LinkedIn">
+        </a></li>
+        <li><a href="https://twitter.com/wycdd" target="_blank">
+            <img src="../images/twitter.png" alt="Twitter">
+        </a></li>
+      </ul>
+    </header>
+    <nav>
+      <a href="../">Home</a> |
+      <a href="../blog.html">Blog</a> |
+      <a href="../projects.html">Projects</a> |
+      <a target="_blank" href="https://www.wyc.io/">Consulting</a>
+    </nav>
+		<hr />
+    <content>
+      <h2>Adding Basic Auth to Django</h2>
+      <div class="info">
+    Posted on May 29, 2017
+    
+</div>
+
+<div class="info">
+    
+    Tags: <a href="../tags/python.html">python</a>, <a href="../tags/django.html">django</a>
+    
+</div>
+
+<p>I was writing a Django application for a project and needed to protect it from the general public. An amazingly simple library called <a href="https://pypi.python.org/pypi/wsgi-basic-auth/">wsgi_basic_auth</a> made this easy.</p>
+<p>Added to my <code>requirements.txt</code>:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="va">wsgi_basic_auth=</span>=<span class="ex">1.1.*</span></code></pre></div>
+<p>Appended to my <code>app/wsgi.py</code>:</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="co"># Tack on HTTP Basic Auth</span>
+<span class="co"># Configured with env variables:</span>
+<span class="co">#   WSGI_AUTH_CREDENTIALS=user:password</span>
+<span class="co">#   WSGI_AUTH_EXCLUDE_PATHS=/not/protected</span>
+<span class="co">#   WSGI_AUTH_PATHS=/protected</span>
+<span class="im">from</span> wsgi_basic_auth <span class="im">import</span> BasicAuth
+application <span class="op">=</span> BasicAuth(application)</code></pre></div>
+<p>Some pre-deploy checks:</p>
+<ul>
+<li>Ensure HTTPS</li>
+<li>Configure health checks appropriately</li>
+</ul>
+
+    </content>
+    <hr />
+		<footer>
+      <small>
+      Site powered by
+      <a href="http://jaspervdj.be/hakyll" target="_blank">Hakyll</a>.
+
+      What I'm up to 
+      <a href="../now.html">now</a>.
+      <!--
+      and
+      <a href="https://www.nginx.com" target="_blank">nginx</a>.
+      --></small>
+		</footer>
+  </body>
+</html>
