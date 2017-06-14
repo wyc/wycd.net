@@ -71,6 +71,8 @@ price of lawn mowing services and benefit the consumer. From their
 > lawns. Many do not own large lawn mowing companies, they don’t do this
 > full-time, they mow evenings and weekends to help make ends meet.
 
+#### Work Futures Contracts
+
 LawnMowingOnline.com reduces search costs thanks to technology, which provides
 a trusted escrow for the consumer, and brokers the transaction. The consumer
 demand is packaged into an attractive pre-paid request for service, complete
@@ -83,6 +85,8 @@ contract". They make money by taking a $1 flat fee. From the website:
 > Out of the $19 for basic lawn mowing about $1 goes to credit card processing
 > fees and $1 goes to LawnMowingOnline.com so the contractor receives $17 out
 > of that $19.
+
+#### Revenues
 
 Their blog does not release exact figures, but it states that tens of thousands
 to low hundreds of thousands of lawns have been mowed by 2014, and reportedly,
@@ -116,9 +120,11 @@ than a team of 1-3 skilled engineers.
 ## Defensibility 
 
 The most obvious defensible aspect of this business is the network of lawn
-mowers and buyers. I imagine the streamlined workflow and low price point
-difficult to compete on for new entrants and existing. It would be difficult to
-establish the same network given the budget constraints.
+mowers and buyers. I imagine the streamlined workflow and low price point hard
+to compete on for new entrants and existing competitors. It would be difficult
+to establish the same network given the budget/margin constraints, and this
+company already has an 8-year head start, trending well on search engines and
+with consumer trust.
 
 A similar company, Lawnlove.com, quoted nearly double the price of
 LawnMowingOnline.com at $40 (vs. $24) for a basic mowing. Lawnlove.com is
