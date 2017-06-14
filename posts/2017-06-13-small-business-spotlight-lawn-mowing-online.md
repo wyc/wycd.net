@@ -54,17 +54,20 @@ hedge trimming, debris removal, or application of insect repellent.
 ## Business Model and Revenues
 
 LawnMowingOnline.com creates an online marketplace that matches consumers with
-lawn mowing needs and mowers who have excess capacity. Two sided markets tend
-to have a [subsidized
-side](https://hbr.org/2006/10/strategies-for-two-sided-markets). In this one,
-the consumers are clearly the subsidized leg, as mowers are always looking for
-more work because they have excess capacity. Consumers are subsidized via low
-prices, and as long as those prices are above the mower [reservation
+lawn mowing needs and mowers. Two sided markets tend to have a [subsidized
+side](https://hbr.org/2006/10/strategies-for-two-sided-markets). In this
+instance, the consumers are clearly the subsidized leg, as mowers are always
+looking for more work because they have excess capacity. Consumers are enticed
+by low prices, and as long as those prices are above the mower [reservation
 wage](https://en.wikipedia.org/wiki/Reservation_wage), then transactions should
 occur. In a sense, this is a form of price discrimination that targets lawn
 mowers with idle employees and equipment. To keep prices low, it offers them
-below-market but above-reservation wage rates--it's still a lot better than
-sitting there and doing nothing.
+below-market but above-reservation wage rates, but it's still a lot better than
+sitting there and doing nothing. From their blog:
+
+> The best part is helping the people that contract with the website to mow
+> lawns. Many do not own large lawn mowing companies, they don’t do this
+> full-time, they mow evenings and weekends to help make ends meet.
 
 LawnMowingOnline.com reduces search costs thanks to technology, which provides
 a trusted escrow for the consumer, and brokers the transaction. The consumer
