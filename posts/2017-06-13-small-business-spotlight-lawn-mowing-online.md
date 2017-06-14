@@ -4,8 +4,8 @@ tags: business, spotlight, disruption
 ---
 
 My lawn was getting scraggly, and I wanted to do something before it started to
-raise eyebrows. I don't care for keeping up with the Joneses, but if this is a
-cultural norm keeping my neighbors happy, then it's absolutely worth it. I
+raise eyebrows. I don't care for keeping up with the Joneses, but if this
+something that keeps my neighbors happy, then it's absolutely worth it. I
 value:
 
 - Low cost
