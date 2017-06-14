@@ -141,7 +141,7 @@ This company has some marks of disruptive technology:
 - It has a simpler offering than standard lawn service companies. No hedges. No
   sidewalks. No leaf blowing. Just cheap lawn mowing.
 - Its increased value dimensions are in price and convenience.
-- It is cheap and "good enough".
+- It is cheap and "good enough."
 
 #### Downsides
 
