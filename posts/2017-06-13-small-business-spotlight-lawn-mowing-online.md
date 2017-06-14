@@ -63,7 +63,9 @@ wage](https://en.wikipedia.org/wiki/Reservation_wage), then transactions should
 occur. In a sense, this is a form of price discrimination that targets lawn
 mowers with idle employees and equipment. To keep prices low, it offers them
 below-market but above-reservation wage rates, but it's still a lot better than
-sitting there and doing nothing. From their [blog](https://lawnmowingonline.wordpress.com/2014/06/25/june-2014-5-years-of-lawnmowingonline-com/):
+sitting there and doing nothing. I think this will eventually drive down the
+price of lawn mowing services and benefit the consumer. From their
+[blog](https://lawnmowingonline.wordpress.com/2014/06/25/june-2014-5-years-of-lawnmowingonline-com/):
 
 > The best part is helping the people that contract with the website to mow
 > lawns. Many do not own large lawn mowing companies, they don’t do this
