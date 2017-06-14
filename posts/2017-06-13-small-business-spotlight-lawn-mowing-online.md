@@ -147,4 +147,11 @@ This company has some marks of disruptive technology:
   up to $50-100/hr for mowing and landscaping. Typical LawnMowingOnline.com
   contractors are people making minimum wage.
 
+#### Downsides
+
+As part of the "low-end" aspects, (to my knowledge) the individual workers are
+not required to carry insurance, although some of them advertise that they do
+in their site profiles. My home owners' insurance happens to protect against
+personal injury liabilities, so it's a risk I can afford.
+
 Aside from my purchases, I don't have any affiliation with LawnMowingOnline.com.
