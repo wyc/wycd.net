@@ -127,8 +127,8 @@ with consumer trust.
 A similar company, Lawnlove.com, quoted nearly double the price of
 LawnMowingOnline.com at $40 (vs. $24) for a basic mowing. Lawnlove.com is
 venture-backed and has at least ten employees. It offers more sophisticated
-service lines such as fertilizer and sprinklers, catering to wealthier people
-who care more about appearances.
+service lines such as fertilizer and sprinklers, catering to people who care
+more about lawn appearances.
 
 ## Disruption
 
