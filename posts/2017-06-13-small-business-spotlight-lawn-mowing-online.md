@@ -81,12 +81,12 @@ contract". They make money by taking a $1 flat fee. From the website:
 Their [blog](https://lawnmowingonline.wordpress.com/) does not release exact
 figures, but it states that tens of thousands to low hundreds of thousands of
 lawns have been mowed by 2014, and reportedly, sales have been consistently
-doubling through 2016. With these rough figures, we can attempt to deduce that
-this year's revenues:
+doubling through 2016. With these rough figures, we can attempt to deduce this
+year's revenues:
 
 $$ TLM_{2014} = \sum_{n=1}^{4} (2^{n-1})YLM_{1} \\
-   \text{If }TLM_{2014} = 50000\text{, then }YLM_{7} \approx 13000 \\
-   \text{If }TLM_{2014} = 500000\text{, then }YLM_{7} \approx 80000
+   \text{If }TLM_{2014} = 50000\text{, then }YLM_{1} \approx 3300 \text{, and }YLM_{7} \approx 420000 \\
+   \text{If }TLM_{2014} = 200000\text{, then }YLM_{1} \approx 13000\text{, and }YLM_{7} \approx 3300000
 $$
 
 Where:
@@ -95,13 +95,15 @@ Where:
 - `YLM` is Lawns Mowed This Year.
 - `n` is the years since founding (2009), starting at 2010 and stopping at 2014.
 
-This translates to current annual revenues of under $100,000, which is a pretty
-small figure.
+We multiply by \\(2^7\\) to get from 2010 to 2017. This translates to current
+annual revenues of between $420k and $3.3MM, which are wonderful figures for a
+bootstrapped tech company.
 
 This company was founded in O Fallon, Missouri in 2009 by James Hassinger.
 [Crunchbase](https://www.crunchbase.com/organization/lawnmowingonline#/entity)
-reports 100-250 employees, which seems absurdly high for its revenues. I imagine
-those "employees" are the lawn mowers, and that the owner is the sole operator.
+reports 100-250 employees, which is a bit of a stretch assuming $70,000
+fully-loaded annual per-FTE costs. I imagine that many employees are actually
+1099 contractors.
 
 The technology side of the platform, while important, should not require more
 than a team of 1-3 skilled engineers.
@@ -110,10 +112,8 @@ than a team of 1-3 skilled engineers.
 
 The most obvious defensible aspect of this business is the network of lawn
 mowers and buyers. I imagine the streamlined workflow and low price point
-difficult to compete on for new entrants. It would be difficult to establish
-the same network given the budget constraints. If the revenue estimates are
-accurate, then the founder is likely subsidizing this venture with the
-opportunity cost of his own time, which might be better compensated elsewhere.
+difficult to compete on for new entrants and existing. It would be difficult to
+establish the same network given the budget constraints.
 
 A similar company, Lawnlove.com, quoted nearly double the price of
 LawnMowingOnline.com at $40 (vs. $24) for a basic mowing. Lawnlove.com is
