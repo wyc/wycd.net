@@ -17,13 +17,14 @@ value:
 I heard about [LawnMowingOnline.com](https://lawnmowingonline.com) from some
 neighbors' posts on NextDoor.  Upon visiting the website, I immediately valued:
 
+- "$19 Lawn Mowing"
 - No app to download
-- Low cost marketed first and foremost on their website ("$19 Lawn Mowing")
 - Straightforward instructions
 
-It looks like a standard Rails project, has no single-page app, and is as
-bare-bones as the service price. But I don't care--my needs are being met,
-and it even has a nice mobile-friendly intuitive design.
+It looks like a standard [Rails](http://rubyonrails.org/) project, has no
+single-page app, and is as bare-bones as the service price. But I don't
+care--my needs are being met, and it even has a nice mobile-friendly intuitive
+design.
 
 In short, my workflow went from:
 
@@ -44,8 +45,8 @@ To:
 4. After the appointment, receive pictures of the mowed lawn.
 
 That is real value. For every vendor I have to talk to, I could call an
-additional prospective client or catch up with a friend--not to mention the
-time suck it is to schedule meetings in person. I am a repeat customer.
+additional prospective client or catch up with a friend instead--not to mention
+the time suck it is to schedule meetings in person. I am a repeat customer.
 
 My only gripe is that they don't currently offer additional services such as
 hedge trimming, debris removal, or application of insect repellent.
