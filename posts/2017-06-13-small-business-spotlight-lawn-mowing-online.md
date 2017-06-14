@@ -30,7 +30,7 @@ In short, my workflow went from:
 
 1. Find multiple vendors. (20-30 minutes)
 2. Call each one to get quotes. (20-30 minutes)
-3. Have each vendor insist to schedule a time to come over give said quote.
+3. Each vendor insists to schedule a time to come over and give said quote.
 4. Wait for vendors to show up late and give quotes. (15 minute property walk per vendor, 1-4 hours lost due to late vendors)
 4. Gather quotes and call best vendors. (15 mins)
 5. Negotiate and get pressured into a monthly service contract. (5 mins)
