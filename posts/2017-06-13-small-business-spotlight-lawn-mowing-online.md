@@ -28,13 +28,13 @@ design.
 
 In short, my workflow went from:
 
-1. Find multiple vendors. 20-30 mins.
-2. Call each one to get quotes. 20-30 mins.
+1. Find multiple vendors. (20-30 minutes)
+2. Call each one to get quotes. (20-30 minutes)
 3. Have each vendor insist to schedule a time to come over give said quote.
-4. Wait for vendors to show up late and give quotes. 15 minute property walk per vendor, 1-4 hours lost due to late vendors.
-4. Gather quotes and call best vendors. 15 mins.
-5. Negotiate and get pressured into a monthly service contract. 5 mins.
-6. Schedule time for the actual work.
+4. Wait for vendors to show up late and give quotes. (15 minute property walk per vendor, 1-4 hours lost due to late vendors)
+4. Gather quotes and call best vendors. (15 mins)
+5. Negotiate and get pressured into a monthly service contract. (5 mins)
+6. Schedule time for the actual work. (5 mins)
 7. Pay $40-$100 per mowing.
 
 To:
