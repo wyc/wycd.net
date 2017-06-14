@@ -100,9 +100,9 @@ $$
 
 Where:
 
-- `TLM` is Total Lawns Mowed.
-- `YLM` is Lawns Mowed This Year.
-- `n` is the years since founding (2009), starting at 2010 and stopping at 2014.
+- \\(TLM\\) is Total Lawns Mowed.
+- \\(YLM_{n}\\) is Lawns Mowed for year \\(n\\).
+- \\(n\\) is the years since founding (2009), starting at 2010 and stopping at 2014.
 
 We multiply by \\(2^7\\) to get from 2010 to 2017. This translates to current
 annual revenues of between $420k and $3.3MM, which are wonderful figures for a
