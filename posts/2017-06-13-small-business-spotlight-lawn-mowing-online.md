@@ -4,7 +4,7 @@ tags: business, spotlight
 ---
 
 My lawn was getting scraggly, and I wanted to do something before it started to
-raise eyebrows. I don't care for keeping up with the Jonses, but if this is a
+raise eyebrows. I don't care for keeping up with the Joneses, but if this is a
 cultural norm keeping my neighbors happy, then it's absolutely worth it. I
 value:
 
@@ -61,10 +61,10 @@ looking for more work because they have excess capacity. Consumers are enticed
 by low prices, and as long as those prices are above the mower [reservation
 wage](https://en.wikipedia.org/wiki/Reservation_wage), then transactions should
 occur. In a sense, this is a form of price discrimination that targets lawn
-mowers with idle employees and equipment. To keep prices low, it offers them
-below-market but above-reservation wage rates, but it's still a lot better than
-sitting there and doing nothing. I think this will eventually drive down the
-price of lawn mowing services and benefit the consumer. From their
+mowers with idle workers and equipment. To keep prices low, it offers them
+below-market but above-reservation wage rates, still a lot better for mowers
+than sitting there and doing nothing. I think this will eventually drive down
+the price of lawn mowing services and benefit the consumer. From their
 [blog](https://lawnmowingonline.wordpress.com/2014/06/25/june-2014-5-years-of-lawnmowingonline-com/):
 
 > The best part is helping the people that contract with the website to mow
