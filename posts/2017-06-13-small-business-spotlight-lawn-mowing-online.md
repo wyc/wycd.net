@@ -1,6 +1,6 @@
 ---
 title: "Small Business Spotlight: LawnMowingOnline.com"
-tags: business, spotlight
+tags: business, spotlight, disruption
 ---
 
 My lawn was getting scraggly, and I wanted to do something before it started to
@@ -71,14 +71,14 @@ the price of lawn mowing services and benefit the consumer. From their
 > lawns. Many do not own large lawn mowing companies, they don’t do this
 > full-time, they mow evenings and weekends to help make ends meet.
 
-#### Work Futures Contracts
+#### Contracts for Future Work
 
 LawnMowingOnline.com reduces search costs thanks to technology, which provides
 a trusted escrow for the consumer, and brokers the transaction. The consumer
 demand is packaged into an attractive pre-paid request for service, complete
 with location details, yard sizes, and pre-determined pricing. This request for
-service is then presented to prospective workers as a fungible work "futures
-contract". They make money by taking a $1 flat fee. From the website:
+service is then presented to prospective workers as an itemized future work
+contract. They make money by taking a $1 flat fee. From the website:
 
 > *Do I have to pay any fees?*
 >
@@ -104,15 +104,13 @@ Where:
 - \\(YLM_{n}\\) is Lawns Mowed for year \\(n\\).
 - \\(n\\) is the years since founding (2009), starting at 2010 and stopping at 2014.
 
-We multiply by \\(2^7\\) to get from 2010 to 2017. This translates to current
-annual revenues of between $420k and $3.3MM, which are wonderful figures for a
-bootstrapped tech company.
+We multiply by \\(2^7\\) to get from 2010 to 2017. This translates to (probably
+wrong) current annual revenues of between $500k and $3MM.
 
 This company was founded in O Fallon, Missouri in 2009 by James Hassinger.
 [Crunchbase](https://www.crunchbase.com/organization/lawnmowingonline#/entity)
 reports 100-250 employees, which is a bit of a stretch assuming $70,000
-fully-loaded annual per-FTE costs. I imagine that many employees are actually
-1099 contractors.
+fully-loaded annual per-FTE costs.
 
 The technology side of the platform, while important, should not require more
 than a team of 1-3 skilled engineers.
@@ -142,10 +140,8 @@ This company has some marks of disruptive technology:
   lawn mowed and don't care so deeply about lawn aesthetics.
 - It has a simpler offering than standard lawn service companies. No hedges. No
   sidewalks. No leaf blowing. Just cheap lawn mowing.
-- Its increased dimensions of value are in price and convenience.
-- It is "good enough". Typical lawn mowing companies are professionals charging
-  up to $50-100/hr for mowing and landscaping. Typical LawnMowingOnline.com
-  contractors are people making minimum wage.
+- Its increased value dimensions are in price and convenience.
+- It is cheap and "good enough".
 
 #### Downsides
 
