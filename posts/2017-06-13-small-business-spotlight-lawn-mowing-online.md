@@ -63,7 +63,7 @@ wage](https://en.wikipedia.org/wiki/Reservation_wage), then transactions should
 occur. In a sense, this is a form of price discrimination that targets lawn
 mowers with idle employees and equipment. To keep prices low, it offers them
 below-market but above-reservation wage rates, but it's still a lot better than
-sitting there and doing nothing. From their blog:
+sitting there and doing nothing. From their [blog](https://lawnmowingonline.wordpress.com/2014/06/25/june-2014-5-years-of-lawnmowingonline-com/):
 
 > The best part is helping the people that contract with the website to mow
 > lawns. Many do not own large lawn mowing companies, they don’t do this
@@ -82,11 +82,10 @@ contract". They make money by taking a $1 flat fee. From the website:
 > fees and $1 goes to LawnMowingOnline.com so the contractor receives $17 out
 > of that $19.
 
-Their [blog](https://lawnmowingonline.wordpress.com/) does not release exact
-figures, but it states that tens of thousands to low hundreds of thousands of
-lawns have been mowed by 2014, and reportedly, sales have been consistently
-doubling through 2016. With these rough figures, we can attempt to deduce this
-year's revenues:
+Their blog does not release exact figures, but it states that tens of thousands
+to low hundreds of thousands of lawns have been mowed by 2014, and reportedly,
+sales have been consistently doubling through 2016. With these rough figures,
+we can attempt to deduce this year's revenues:
 
 $$ TLM_{2014} = \sum_{n=1}^{4} (2^{n-1})YLM_{1} \\
    \text{If }TLM_{2014} = 50000\text{, then }YLM_{1} \approx 3300 \text{, and }YLM_{7} \approx 420000 \\
