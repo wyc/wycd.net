@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>How to Mirror to Projectors Using a ThinkPad P50 on GNU/Linux | wycd.net</title>
+		<link rel="stylesheet" href="../css/default.css" />
+		<link rel="stylesheet" href="../css/syntax.css" />
+
+    <!-- SEO and Sharing -->
+    <meta name="description" content />
+    <meta property="og:title" content="How to Mirror to Projectors Using a ThinkPad P50 on GNU/Linux" />
+    <meta property="og:description" content />
+    <meta property="og:image" content />
+    <meta property="og:url" content="https://www.wyc.io/posts/2017-08-23-thinkpad-p50-external-display-on-gnu-linux.html" />
+    <meta property="og:site_name" content="wycd.net" />
+    <meta name="twitter:title" content="How to Mirror to Projectors Using a ThinkPad P50 on GNU/Linux" />
+    <meta name="twitter:description" content />
+    <meta name="twitter:image" content />
+    <meta name="twitter:card" content="summary_large_image" />
+	</head>
+	<body>
+    <header>
+      <h1>wyc's domain</h1>
+      <ul>
+        <li><a href="https://github.com/wyc" target="_blank">
+            <img src="../images/github.png" alt="GitHub">
+        </a></li>
+        <li><a href="https://www.linkedin.com/in/changwayne" target="_blank">
+            <img src="../images/linkedin.png" alt="LinkedIn">
+        </a></li>
+        <li><a href="https://twitter.com/wycdd" target="_blank">
+            <img src="../images/twitter.png" alt="Twitter">
+        </a></li>
+      </ul>
+    </header>
+    <nav>
+      <a href="../">Home</a> |
+      <a href="../blog.html">Blog</a> |
+      <a href="../projects.html">Projects</a> |
+      <a target="_blank" href="https://www.wyc.io/">Consulting</a>
+    </nav>
+		<hr />
+    <content>
+      <h2>How to Mirror to Projectors Using a ThinkPad P50 on GNU/Linux</h2>
+      <div class="info">
+    Posted on August 23, 2017
+    
+</div>
+
+<div class="info">
+    
+    Tags: <a href="../tags/technology.html">technology</a>, <a href="../tags/thinkpad.html">thinkpad</a>, <a href="../tags/linux.html">linux</a>
+    
+</div>
+
+<p>It’s difficult to present using an external display using GNU/Linux on the ThinkPad P50. It’s outfitted with an NVIDIA Optimus setup, and the official documentation even admits “<a href="http://us.download.nvidia.com/XFree86/Linux-x86/319.12/README/optimus.html">limited</a>” support for GNU/Linux. I recently had to figure this out to give a presentation from my laptop.</p>
+<h2 id="nouveau">nouveau</h2>
+<p>This tutorial will use the proprietary NVIDIA drivers, but if you prefer a completely open-source nouveau-based solution, the best resource may be the ArchLinux wiki’s page on <a href="https://wiki.archlinux.org/index.php/PRIME">PRIME</a>.</p>
+<h2 id="prerequisite-software">Prerequisite Software</h2>
+<p>You need to install the following software for your distribution:</p>
+<ul>
+<li><a href="https://bumblebee-project.org/">Bumblebee</a></li>
+<li><a href="https://www.nvidia.com/object/unix.html">NVIDIA Proprietary Drivers</a></li>
+<li><a href="https://www.intel.com/content/www/us/en/support/graphics-drivers.html">Intel Graphics Drivers</a> with the <a href="https://cgit.freedesktop.org/xorg/app/intel-gpu-tools/">intel-virtual-output tool</a></li>
+</ul>
+<p>I cannot praise the Bumblebee team enough for their excellent work. Thank you, Bumblebee team.</p>
+<h2 id="configuration">Configuration</h2>
+<p>In <code>/etc/bumblebee/xorg.conf.nvidia</code>, ensure that the following settings are active:</p>
+<pre><code>Section &quot;ServerLayout&quot;
+    Identifier  &quot;Layout0&quot;
+    Option      &quot;AutoAddDevices&quot; &quot;true&quot;
+    Option      &quot;AutoAddGPU&quot; &quot;false&quot;
+EndSection
+
+Section &quot;Device&quot;
+    Identifier  &quot;DiscreteNvidia&quot;
+    Driver      &quot;nvidia&quot;
+    VendorName  &quot;NVIDIA Corporation&quot;
+
+    Option &quot;ProbeAllGpus&quot; &quot;false&quot;
+    Option &quot;AllowEmptyInitialConfiguration&quot;
+    Option &quot;UseEDID&quot; &quot;true&quot;
+    # Option &quot;UseDisplayDevice&quot; &quot;none&quot;
+EndSection</code></pre>
+<p>Important bits:</p>
+<ul>
+<li><code>AutoAddDevices</code> ensures that the GPU gets recognized.</li>
+<li><code>AllowEmptyInitialConfiguration</code> allows X and NVIDIA to play nicely and start up without being attached to an external display.</li>
+<li><code>UseEDID</code> allows the NVIDIA card to probe the display device for metadata.</li>
+</ul>
+<p>You should consult the Bumblebee documentation, but note that your NVIDIA card should not have an entry in your default Xorg configuration.</p>
+<h2 id="presenting">Presenting</h2>
+<p>First, plug in your external monitor. Then,</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># init.d-style</span>
+$ <span class="fu">sudo</span> /etc/init.d/bumblebee start
+<span class="co"># with systemd</span>
+$ <span class="fu">sudo</span> systemctl start bumblebee
+
+$ <span class="fu">sudo</span> tee /proc/acpi/bbswitch <span class="op">&lt;&lt;&lt;</span>ON  <span class="co"># Turn the card on</span>
+$ <span class="fu">sudo</span> modprobe nvidia  <span class="co"># ensure the nvidia driver is loaded</span>
+$ <span class="ex">optirun</span> true  <span class="co"># &quot;warm&quot; the new session</span>
+$ <span class="ex">intel-virtual-output</span>  <span class="co"># register the new display</span>
+$ <span class="ex">xrandr</span>
+<span class="co"># At this point, you should see a VIRTUALX display with resolutions read. This</span>
+<span class="co"># is the output name for your external device. Mine is VIRTUAL2. Additionally,</span>
+<span class="co"># you'll see the original output for your laptop's current monitor. Mine is</span>
+<span class="co"># eDP1.</span>
+$ <span class="ex">xrandr</span> --output VIRTUAL2 --auto  <span class="co"># broadcast to the external display</span>
+$ <span class="ex">xrandr</span> --output eDP1 --primary --scale 0.5x0.5  <span class="co"># scale down my hi-res display</span>
+$ <span class="bu">export</span> <span class="va">DISPLAY=</span>:8  <span class="co"># bumblebee default display number</span>
+$ <span class="ex">optirun</span> evince -s presentation.pdf  <span class="co"># run my desired applicaiton with optirun</span></code></pre></div>
+<h2 id="unpresenting">Unpresenting</h2>
+<p>After you’re done presenting, do the following,</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="ex">xrandr</span> --output VIRTUAL2 --off  <span class="co"># turn off the external display</span>
+$ <span class="ex">xrandr</span> --output eDP1 --primary --scale 1x1  <span class="co"># return scale to normal</span>
+
+<span class="co"># init.d</span>
+$ <span class="fu">sudo</span> /etc/init.d/bumblebee stop
+<span class="co"># systemd</span>
+$ <span class="fu">sudo</span> systemctl stop bumblebee
+
+$ <span class="fu">sudo</span> modprobe -r nvidia  <span class="co"># remove the nvidia kernel module</span>
+$ <span class="fu">sudo</span> tee /proc/acpi/bbswitch <span class="op">&lt;&lt;&lt;</span>OFF  <span class="co"># turn the card off</span>
+$ <span class="bu">export</span> <span class="va">DISPLAY=</span>:0  <span class="co"># set the display back to the default</span></code></pre></div>
+<p>At this point, you can unplug the monitor.</p>
+<h2 id="other-resources">Other resources</h2>
+<p>I relied on these pages extensively to come to a working solution:</p>
+<ul>
+<li><p><a href="https://wiki.archlinux.org/index.php/Bumblebee#Output_wired_to_the_NVIDIA_chip">Bumblebee - ArchLinux Wiki</a></p></li>
+<li><p><a href="https://www.reddit.com/r/archlinux/comments/326bl6/using_the_hdmi_port_on_optimusenabled_thinkpads/">Using the HDMI Port on Optimus-Enabled Thinkpads - Reddit</a></p></li>
+<li><p><a href="https://superuser.com/questions/1082617/bumblebee-with-hdmi-on-nvidia-make-usable-both-with-without-connected-monitor">Bumblebee with HDMI on NVIDIA - SuperUser</a></p></li>
+</ul>
+
+    </content>
+    <hr />
+		<footer>
+      <small>
+      Site powered by
+      <a href="http://jaspervdj.be/hakyll" target="_blank">Hakyll</a>.
+
+      What I'm up to 
+      <a href="../now.html">now</a>.
+      <!--
+      and
+      <a href="https://www.nginx.com" target="_blank">nginx</a>.
+      --></small>
+		</footer>
+
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <script type="text/x-mathjax-config">
+    </script>
+  </body>
+</html>
