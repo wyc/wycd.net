@@ -87,9 +87,9 @@ relates to cryptocurrencies and processes today.
 
 #### Cryptocurrency Features Used
 
-- **Currency-integrated logic**, currently known as smart contracts allows for
-  seamless integration between arbitration logic and transfers of value. At the
-  time of writing, a implementation of this product would consist of a
+- **Currency-integrated logic** (currently known as **smart contracts**) allows
+  for seamless integration between arbitration logic and transfers of value. At
+  the time of writing, an implementation of this product would consist of a
   multi-party integration: banks from all parties for transfer, an escrow
   entity, and an arbitrator, and a product company. With enough advancements,
   all but the product company will be commoditized by blockchain automation.
