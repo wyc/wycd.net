@@ -4,18 +4,18 @@
 		<meta charset="utf-8">
 		<meta http-equiv="x-ua-compatible" content="ie=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Posts tagged "programming" | wycd.net</title>
+		<title>Haskell: divMod and quotRem Differences | wycd.net</title>
 		<link rel="stylesheet" href="../css/default.css" />
 		<link rel="stylesheet" href="../css/syntax.css" />
 
     <!-- SEO and Sharing -->
     <meta name="description" content />
-    <meta property="og:title" content="Posts tagged " programming"" />
+    <meta property="og:title" content="Haskell: divMod and quotRem Differences" />
     <meta property="og:description" content />
     <meta property="og:image" content />
-    <meta property="og:url" content="https://www.wyc.io/tags/programming.html" />
+    <meta property="og:url" content="https://www.wyc.io/posts/2017-10-01-haskell-divmod-quotrem.html" />
     <meta property="og:site_name" content="wycd.net" />
-    <meta name="twitter:title" content="Posts tagged " programming"" />
+    <meta name="twitter:title" content="Haskell: divMod and quotRem Differences" />
     <meta name="twitter:description" content />
     <meta name="twitter:image" content />
     <meta name="twitter:card" content="summary_large_image" />
@@ -43,39 +43,35 @@
     </nav>
 		<hr />
     <content>
-      <h2>Posts tagged "programming"</h2>
-      <ul>
+      <h2>Haskell: divMod and quotRem Differences</h2>
+      <div class="info">
+    Posted on October  1, 2017
     
-        <li>
-            <a href="../posts/2017-10-01-haskell-divmod-quotrem.html">Haskell: divMod and quotRem Differences</a> - October  1, 2017
-            <p>
-            
-            </p>
-        </li>
-    
-        <li>
-            <a href="../posts/2017-01-19-fizz-buzz-and-triangles-in-j.html">FizzBuzz in J, Explained</a> - January 19, 2017
-            <p>
-            
-            </p>
-        </li>
-    
-        <li>
-            <a href="../posts/2014-07-10-a-simple-network-client-in-rust.html">A Simple Network Client in Rust</a> - July 10, 2014
-            <p>
-            
-            </p>
-        </li>
-    
-        <li>
-            <a href="../posts/2014-07-02-logging-function-names-in-go.html">Logging Function Names in Go</a> - July  2, 2014
-            <p>
-            
-            </p>
-        </li>
-    
-</ul>
+</div>
 
+<div class="info">
+    
+    Tags: <a href="../tags/haskell.html">haskell</a>, <a href="../tags/programming.html">programming</a>
+    
+</div>
+
+<p><code>divMod</code> is integer division and modulo that truncates towards negative infinity, while <code>quotRem</code> is integer division and modulo that behaves like C-style operators which truncate towards zero.</p>
+<p>Here’s a visualization that may help explain their differences.</p>
+<p>We’ll first divide <code>5</code> by <code>2</code> step by step.</p>
+<pre><code>steps | value
+------+-------
+   0  |   5
+   1  |   3
+   2  |   1  # 5 `divMod` 2 == 5 `quotRem` 2 == (2, 1)</code></pre>
+<p>The values are the same in this example. However, we now divide <code>5</code> by <code>-2</code> step by step.</p>
+<pre><code>steps | value
+------+-------
+   0  |   5
+  -1  |   3
+  -2  |   1  # quotRem stops here. 5 `quotRem` (-2) == (-2, 1)
+  -3  |  -1  # divMod stops here. 5 `divMod` (-2) == (-3, -1)</code></pre>
+<p>The key insight is that <code>quotRem</code> stops before the value gets past zero, while <code>divMod</code> will happily cross its value past zero for the final step.</p>
+<p>For more information see section <code>6.4.2</code> of <a href="https://www.haskell.org/onlinereport/basic.html">The Haskell 98 Report</a>.</p>
 
     </content>
     <hr />
