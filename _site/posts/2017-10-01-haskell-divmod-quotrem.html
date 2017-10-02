@@ -70,6 +70,13 @@
   -1  |   3
   -2  |   1  # quotRem stops here. 5 `quotRem` (-2) == (-2, 1)
   -3  |  -1  # divMod stops here. 5 `divMod` (-2) == (-3, -1)</code></pre>
+<p>One more example, <code>-14</code> divided by <code>5</code>.</p>
+<pre><code>steps | value
+------+-------
+   0  | -14
+  -1  |  -9
+  -2  |  -4  # quotRem stops here. (-14) `quotRem` 5 == (-2, -4)
+  -3  |   1  # divMod stops here. (-14) `divMod` 5 == (-3, 1)</code></pre>
 <p>The key insight is that <code>quotRem</code> stops before the value gets past zero, while <code>divMod</code> will happily cross its value past zero for the final step.</p>
 <p>For more information see section <code>6.4.2</code> of <a href="https://www.haskell.org/onlinereport/basic.html">The Haskell 98 Report</a>.</p>
 

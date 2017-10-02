@@ -32,6 +32,17 @@ steps | value
   -3  |  -1  # divMod stops here. 5 `divMod` (-2) == (-3, -1)
 ```
 
+One more example, `-14` divided by `5`.
+
+```
+steps | value
+------+-------
+   0  | -14
+  -1  |  -9
+  -2  |  -4  # quotRem stops here. (-14) `quotRem` 5 == (-2, -4)
+  -3  |   1  # divMod stops here. (-14) `divMod` 5 == (-3, 1)
+```
+
 The key insight is that `quotRem` stops before the value gets past zero, while
 `divMod` will happily cross its value past zero for the final step.
 
