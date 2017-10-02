@@ -1,6 +1,7 @@
 ---
 title: "My Favorite Strange Loop 2017 Talks"
 tags: conferences, technology, software
+description: "Here's a list (in no particular order) of some of the most interesting talks from the Strange Loop 2017 conference."
 ---
 
 It was a great conference.

@@ -1,6 +1,7 @@
 ---
 title: "Haskell: divMod and quotRem Differences"
 tags: haskell, programming
+description: "The difference between these two operators, visualized!"
 ---
 
 `divMod` is integer division and modulo that truncates towards negative
