@@ -12,10 +12,10 @@ Here's a list (in no particular order) of some of the most interesting talks:
   presentation is based. Seeing that code itself is already worth clicking!
 
 - ["Dependent Types in Haskell" by Stephanie Weirich](https://www.youtube.com/watch?v=wNa3MMbhwS4&index=32&list=PLcGKfGEEONaDzd0Hkn2f1talsTu1HLDYu):
-  She gives a very practical example that is encountered day-to-day for most
-  programmers, and details how dependent types can make the code better.
-  Near the end, there's even an inductive proof snuck into the type system to
-  ensure certain properties.
+  Stephanie Weirich gives a very practical example that is encountered
+  day-to-day for most programmers, and details how dependent types can make the
+  code better.  Near the end, there's even an inductive proof snuck into the
+  type system to ensure certain properties.
 
 - ["Just-So Stories for AI: Explaining Black-Box Predictions" by Sam
   Ritchie](https://www.youtube.com/watch?v=DiWkKqZChF0&index=22&list=PLcGKfGEEONaDzd0Hkn2f1talsTu1HLDYu):
@@ -36,6 +36,16 @@ Here's a list (in no particular order) of some of the most interesting talks:
 - ["A (Not So Gentle) Introduction To Systems Programming In ATS" by Aditya Siram](https://www.youtube.com/watch?v=zt0OQb1DBko&list=PLcGKfGEEONaDzd0Hkn2f1talsTu1HLDYu&index=13):
   Aditya Siram makes C safer without forcing us to arrest our pointers.
 
+- ["Rebuilding the Cathedral" by Nadia Eghbal](https://www.youtube.com/watch?v=VS6IpvTWwkQ&index=2&list=PLcGKfGEEONaDzd0Hkn2f1talsTu1HLDYu):
+  Nadia Eghbal talks about the dynamics in Open Source communities, what's
+  broken, and how to fix it.
+
+- ["The Holy Grail of Systems Analysis: from What to Where to Why" by Daniel Spoonhower](https://www.youtube.com/watch?v=3u-td4vZYHU&index=63&list=PLcGKfGEEONaDzd0Hkn2f1talsTu1HLDYu):
+  Daniel Spoonhower gives a really good overview of distributed tracing and
+  what you can use it for. It was one of the best [interactive
+  demos](http://donut.zone) ever.
 
 I'm almost certain there were other amazing talks not on my personal list, but
-my schedule simply did not permit.
+my schedule simply did not permit. You can find a playlist of all the uploaded
+talks
+[here](https://www.youtube.com/playlist?list=PLcGKfGEEONaDzd0Hkn2f1talsTu1HLDYu).
