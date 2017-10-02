@@ -43,8 +43,10 @@ steps | value
   -3  |   1  # divMod stops here. (-14) `divMod` 5 == (-3, 1)
 ```
 
-The key insight is that `quotRem` stops before the value gets past zero, while
-`divMod` will happily cross its value past zero for the final step.
+The key insight is that while `quotRem` "stops" as soon as remaining value is
+less in magnitude than the divisor (the number the dividend is divided by),
+`divMod` will happily "cross" its value past zero for the final step if it will
+help move the total number of steps towards negative infinity.
 
 For more information see section `6.4.2` of [The Haskell 98
 Report](https://www.haskell.org/onlinereport/basic.html).
