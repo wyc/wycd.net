@@ -1,6 +1,8 @@
 ---
 title: "If Cryptocurrencies Became Useful: Raising Seed Money"
 tags: blockchain, cryptocurrency
+description: The role cryptocurrencies could play in early stage venture funding.
+imageUrl: "/images/blog/20170915/computer-handshake.jpg"
 ---
 
 It's 2030, and you're an entrepreneur raising the very first round of funding
@@ -80,7 +82,7 @@ relates to cryptocurrencies and processes today.
 - **Global contracts for free**, contingent on a global blockchain-based equity
   solution. The contract terms are in code, and logic transcends language
   barriers. Programmatic enforcement does not care about nationality or credit.
-- **Low lock-in and data transferability**. A new offering can come along and
+- **Low lock-in and easy data transferability**. A new offering can come along and
   immediately import all your data with proper authorization, as the data formats
   and encrypted blobs will be publicly available. It could simply be a matter of
   importing a root contract key to move a whole corpus to a new service.
